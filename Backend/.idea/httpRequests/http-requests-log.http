@@ -1,0 +1,476 @@
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T140119.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T140051.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T135910.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T135232.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T135145.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T134850.500.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T134841.500.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T134628.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-25T133804.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 267
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+#POST http://localhost:8080/api/email/send
+#Content-Type: application/json
+#
+#{
+#  "to": "alexandrucojoaca8@gmail.com",
+#  "subject": "Test Subject",
+#  "message": "Testarea serviciilor de email!"
+#}
+
+<> 2025-05-25T133753.500.json
+
+###
+
+POST http://localhost:8080/api/email/send
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=4DBA8A0373E7C488AF37D876E2079B45
+cookie: JSESSIONID=58429D12A78C46F929E86089EEDBA3E0
+content-length: 117
+
+{
+  "to": "alexandrucojoaca8@gmail.com",
+  "subject": "Test Subject",
+  "message": "Testarea serviciilor de email!"
+}
+
+<> 2025-05-25T133744.200.html
+
+###
+
+POST http://localhost:8080/api/email/send
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=550FA2306550CA6D5389E35B11F5C69C
+cookie: JSESSIONID=4DBA8A0373E7C488AF37D876E2079B45
+content-length: 117
+
+{
+  "to": "alexandrucojoaca8@gmail.com",
+  "subject": "Test Subject",
+  "message": "Testarea serviciilor de email!"
+}
+
+<> 2025-05-25T125728.200.html
+
+###
+
+POST http://localhost:8080/api/email/send
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=EB0394D5A4BBECD1B8489011139BE5F4
+cookie: JSESSIONID=550FA2306550CA6D5389E35B11F5C69C
+content-length: 117
+
+{
+  "to": "alexandrucojoaca8@gmail.com",
+  "subject": "Test Subject",
+  "message": "Testarea serviciilor de email!"
+}
+
+<> 2025-05-25T113616.200.html
+
+###
+
+POST http://localhost:8080/api/email/send
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=971AD4DE2258903FFD15889E27489FB9
+cookie: JSESSIONID=EB0394D5A4BBECD1B8489011139BE5F4
+content-length: 117
+
+{
+  "to": "alexandrucojoaca8@gmail.com",
+  "subject": "Test Subject",
+  "message": "Testarea serviciilor de email!"
+}
+
+<> 2025-05-25T113121.200.html
+
+###
+
+POST http://localhost:8080/api/email/send
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+cookie: JSESSIONID=971AD4DE2258903FFD15889E27489FB9
+content-length: 117
+
+{
+  "to": "alexandrucojoaca8@gmail.com",
+  "subject": "Test Subject",
+  "message": "Testarea serviciilor de email!"
+}
+
+<> 2025-05-25T112947.200.html
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 60
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am febră și tuse, dar nu durere de cap"
+}
+
+<> 2025-05-23T140228.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-23T091824.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-23T085858.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 66
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
+
+<> 2025-05-23T084514.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 60
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am febră și tuse, dar nu durere de cap"
+}
+
+<> 2025-05-23T082942.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 60
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am febră și tuse, dar nu durere de cap"
+}
+
+<> 2025-05-19T011212.200.json
+
+###
+
+POST http://localhost:5000/predict
+Content-Type: application/json
+Content-Length: 38
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "symptoms": "Am febră și tuse"
+}
+
+<> 2025-05-19T011048.200.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-05-13T235518.200.txt
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-05-09T091548.500.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-05-09T091527.500.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-05-09T084923.500.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-04-16T094653.500.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-04-16T094307.500.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-04-16T093706.500.json
+
+###
+
+DELETE http://localhost:8080/api/users/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-04-16T093338.500.json
+
+###
+
+DELETE http://localhost:8080/api/diagnoses/delete/1
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2025-04-16T093218.500.json
+
+###
+

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="03d62afa-d628-4d86-afe4-d203d0a6cb7b" name="Changes" comment="part2">
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/API/API_Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Diagnosis/Diagnosis_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Diagnosis/Diagnosis_Email_Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Diagnosis/Diagnosis_Request.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Diagnosis/Diagnosis_Response.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Diagnosis/Diagnosis_Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/EmailController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Medicatie_Pacient/Medicatie_Pacient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Medicatie_Pacient/Medicatie_Pacient_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Medicatie_Pacient/Medicatie_Pacient_Repository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Users/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Users/CustomUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Users/User_Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Users/VerificationToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Users/VerificationTokenRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/resources/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/resources/templates/predict.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/resources/templates/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data_Base/test.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/MDS/Analize/Analize_Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Analize/Analize_Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/MDS/Consultatie/Consultatie.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Consultatie/Consultatie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/MDS/Consultatie/Consultatie_Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Consultatie/Consultatie_Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/MDS/Consultatie/Consultatie_Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/Consultatie/Consultatie_Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/MDS/pos.http" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/MDS/pos.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Data_Base/Script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../Data_Base/Script.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2vG0FWm7ngTGPP4S1JcD1GKedR4" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "HTTP Request.pos | #1 (1).executor": "Run",
+    "HTTP Request.pos | #1.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.DemoApplication.executor": "Run",
+    "Spring Boot.MDS_App.executor": "Run",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/alexa/Documents/MDS/Proiect/Backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\alexa\Documents\MDS\Proiect\Backend\demo\src\main\java\MDS" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.MDS_App">
+    <configuration name="pos | #1 (1)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/demo/src/main/java/MDS/pos.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="pos | #1 (1)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/demo/src/main/java/MDS/pos.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="pos | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/demo/src/main/java/MDS/Analize/pos.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="pos | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/demo/src/main/java/MDS/Analize/pos.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="DemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.demo.DemoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.demo.DemoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MDS_App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="MDS.MDS_App" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="MDS.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MDS_App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="MDS.MDS_App" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="MDS.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.MDS_App" />
+        <item itemvalue="HTTP Request.pos | #1 (1)" />
+        <item itemvalue="HTTP Request.pos | #1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03d62afa-d628-4d86-afe4-d203d0a6cb7b" name="Changes" comment="" />
+      <created>1743756000149</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743756000149</updated>
+      <workItem from="1743756001256" duration="1265000" />
+      <workItem from="1744131095014" duration="10736000" />
+      <workItem from="1744318496345" duration="15000" />
+      <workItem from="1744661835426" duration="2288000" />
+      <workItem from="1744779801233" duration="3917000" />
+      <workItem from="1744785388238" duration="1840000" />
+      <workItem from="1746767547018" duration="5199000" />
+      <workItem from="1747205341534" duration="250000" />
+      <workItem from="1747597370140" duration="7128000" />
+      <workItem from="1747978090671" duration="4772000" />
+      <workItem from="1747998035308" duration="324000" />
+      <workItem from="1748113805459" duration="29992000" />
+    </task>
+    <task id="LOCAL-00001" summary="part2">
+      <option name="closed" value="true" />
+      <created>1744785293583</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744785293583</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="part2" />
+    <option name="LAST_COMMIT_MESSAGE" value="part2" />
+  </component>
+</project>

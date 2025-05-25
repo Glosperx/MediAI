@@ -1,0 +1,30 @@
+{
+  "diagnosis": "Astm",
+  "medication": "Inhalator (ex. Salbutamol)",
+  "probabilities": {
+    "Amigdalită": 0.12866666666666668,
+    "Anemie": 0.005,
+    "Apendicită": 0.08,
+    "Artrită": 0.03,
+    "Astm": 0.22,
+    "Bronșită": 0.03,
+    "Cefalee de tensiune": 0.05,
+    "Conjunctivită": 0.0,
+    "Diabet tip 2": 0.01,
+    "Faringită": 0.18133333333333332,
+    "Fractură osoasă": 0.01,
+    "Gastroenterită": 0.0,
+    "Gripă": 0.06,
+    "Hipertensiune": 0.01,
+    "Hipotiroidism": 0.005,
+    "Infecție la ureche": 0.04,
+    "Infecție urinară": 0.08,
+    "Intoxicație alimentară": 0.0,
+    "Migrenă": 0.0,
+    "Mononucleoză": 0.0,
+    "Pietre la rinichi": 0.01,
+    "Psoriazis": 0.01,
+    "Rinită alergică": 0.04,
+    "Sinuzită": 0.0
+  }
+}

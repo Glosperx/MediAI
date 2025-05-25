@@ -1,0 +1,30 @@
+{
+  "diagnosis": "Hipertensiune",
+  "medication": "Inhibitori ACE (ex. Enalapril)",
+  "probabilities": {
+    "Amigdalită": 0.0,
+    "Anemie": 0.005,
+    "Apendicită": 0.0,
+    "Artrită": 0.0,
+    "Astm": 0.0,
+    "Bronșită": 0.0,
+    "Cefalee de tensiune": 0.27,
+    "Conjunctivită": 0.01,
+    "Diabet tip 2": 0.0,
+    "Faringită": 0.0,
+    "Fractură osoasă": 0.0,
+    "Gastroenterită": 0.0,
+    "Gripă": 0.01,
+    "Hipertensiune": 0.61,
+    "Hipotiroidism": 0.005,
+    "Infecție la ureche": 0.01,
+    "Infecție urinară": 0.0,
+    "Intoxicație alimentară": 0.0,
+    "Migrenă": 0.06,
+    "Mononucleoză": 0.0,
+    "Pietre la rinichi": 0.0,
+    "Psoriazis": 0.0,
+    "Rinită alergică": 0.0,
+    "Sinuzită": 0.02
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "diagnosis": "Astm",
+  "medication": "Inhalator (ex. Salbutamol)",
+  "probabilities": {
+    "Amigdalită": 0.12866666666666668,
+    "Astm": 0.22,
+    "Faringită": 0.18133333333333332
+  }
+}

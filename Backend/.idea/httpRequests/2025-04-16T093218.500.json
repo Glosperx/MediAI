@@ -1,0 +1,6 @@
+{
+  "timestamp": "2025-04-16T06:32:18.917+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "path": "/api/diagnoses/delete/1"
+}

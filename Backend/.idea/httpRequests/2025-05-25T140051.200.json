@@ -1,0 +1,16 @@
+{
+  "diagnosis": "Hipertensiune",
+  "identified_symptoms": [
+    "durere de cap",
+    "palpitații"
+  ],
+  "medication": "Inhibitori ACE (ex. Enalapril)",
+  "negated_symptoms": [
+    "tuse"
+  ],
+  "probabilities": {
+    "Cefalee de tensiune": 0.27,
+    "Hipertensiune": 0.61,
+    "Migrenă": 0.06
+  }
+}

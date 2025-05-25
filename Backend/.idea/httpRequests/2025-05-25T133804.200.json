@@ -1,0 +1,9 @@
+{
+  "diagnosis": "Hipertensiune",
+  "medication": "Inhibitori ACE (ex. Enalapril)",
+  "probabilities": {
+    "Cefalee de tensiune": 0.27,
+    "Hipertensiune": 0.61,
+    "Migrenă": 0.06
+  }
+}

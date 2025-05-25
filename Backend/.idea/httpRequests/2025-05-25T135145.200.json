@@ -1,0 +1,14 @@
+{
+  "diagnosis": "Cefalee de tensiune",
+  "found_symptoms": [
+    "tuse",
+    "durere de cap"
+  ],
+  "medication": "Paracetamol, relaxare",
+  "negated_symptoms": [],
+  "probabilities": {
+    "Astm": 0.22,
+    "Cefalee de tensiune": 0.48,
+    "Hipertensiune": 0.06
+  }
+}

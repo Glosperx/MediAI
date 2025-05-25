@@ -1,0 +1,6 @@
+{
+  "timestamp": "2025-04-16T06:33:38.801+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "path": "/api/users/delete/1"
+}
