@@ -8,4 +8,6 @@ import java.util.Optional;
 @Repository
 public interface Analize_Repository extends JpaRepository<Analize, Long> {
     Optional<Analize> findByTipAnaliza(String tipAnaliza);
+    void deleteByUserId(Long userId);
+
 }

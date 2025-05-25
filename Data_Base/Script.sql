@@ -16,9 +16,10 @@ GRANT ALL PRIVILEGES ON DATABASE MDS TO postgres;
 CREATE TABLE Users (
     USER_ID SERIAL PRIMARY KEY,
     Acronim VARCHAR(10) NOT NULL,
-    Rol VARCHAR(20) NOT NULL CHECK (Rol IN ('pacient', 'doctor','admin')),
+    Rol VARCHAR(20) NOT NULL CHECK (Rol IN ('PACIENT', 'DOCTOR','ADMIN')),
     Email VARCHAR(100) UNIQUE NOT NULL,
-    Parola VARCHAR(50) NOT NULL
+    Parola VARCHAR(255) NOT NULL,
+    Activ BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 
@@ -47,10 +48,10 @@ CREATE TABLE Consultatie (
     ID_Pacient INT NOT NULL,
     ID_Doctor INT NOT NULL,
     Nota TEXT,
-    Aprobat INT CHECK (Aprobat IN (0, 1)),
+    Aprobat BOOLEAN NOT NULL DEFAULT FALSE,
     Data_consultatie TIMESTAMP NOT NULL,
-    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID),
-    FOREIGN KEY (ID_Doctor) REFERENCES Users(USER_ID)
+    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Doctor) REFERENCES Users(USER_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE Analize (
@@ -59,7 +60,7 @@ CREATE TABLE Analize (
     Tip_Analiza VARCHAR(50) NOT NULL,
     Data_Analiza TIMESTAMP NOT NULL,
     Rezultat VARCHAR(100),
-    FOREIGN KEY (USER_ID) REFERENCES Users(USER_ID)
+    FOREIGN KEY (USER_ID) REFERENCES Users(USER_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE Simptome_Pacient (
@@ -67,19 +68,20 @@ CREATE TABLE Simptome_Pacient (
     ID_Pacient INT NOT NULL,
     ID_Simptom INT NOT NULL,
     Data_Raportare TIMESTAMP NOT NULL,
-    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID),
-    FOREIGN KEY (ID_Simptom) REFERENCES Simptome(ID_SIMPTOM)
+    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Simptom) REFERENCES Simptome(ID_SIMPTOM) ON DELETE CASCADE
 );
 
 CREATE TABLE Diagnostic_Pacient (
     ID SERIAL PRIMARY KEY,
     ID_Pacient INT NOT NULL,
     ID_Diagnostic INT NOT NULL,
+    Probabilitate FLOAT CHECK (Probabilitate BETWEEN 0 AND 1),
     Data_Diagnostic TIMESTAMP NOT NULL,
     ID_Doctor INT,
-    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID),
-    FOREIGN KEY (ID_Diagnostic) REFERENCES Diagnostic(ID_DIAGNOSTIC),
-    FOREIGN KEY (ID_Doctor) REFERENCES Users(USER_ID)
+    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Diagnostic) REFERENCES Diagnostic(ID_DIAGNOSTIC) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Doctor) REFERENCES Users(USER_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE Medicatie_Pacient (
@@ -90,26 +92,29 @@ CREATE TABLE Medicatie_Pacient (
     Doza VARCHAR(20),
     Frecventa VARCHAR(20),
     ID_Doctor INT,
-    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID),
-    FOREIGN KEY (ID_Prescriptie) REFERENCES Medicatie(ID_PRESCRIPTIE),
-    FOREIGN KEY (ID_Doctor) REFERENCES Users(USER_ID)
+    FOREIGN KEY (ID_Pacient) REFERENCES Users(USER_ID) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Prescriptie) REFERENCES Medicatie(ID_PRESCRIPTIE) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Doctor) REFERENCES Users(USER_ID) ON DELETE CASCADE
 );
 
 
-INSERT INTO Users (USER_ID, Acronim, Rol, Email, Parola) VALUES
-(1, 'AP', 'pacient', 'ana.pop@email.com', 'ciscosecpa55'),
-(2, 'IM', 'pacient', 'ion.matei@email.com', 'ciscoconpa55'),
-(3, 'MP', 'pacient', 'maria.pop@email.com', 'Admin01pa55'),
-(4, 'DR', 'pacient', 'dan.rosu@email.com', 'pass101'),
-(5, 'EP', 'pacient', 'elena.pop@email.com', 'pass202'),
-(6, 'GV', 'pacient', 'george.vas@email.com', 'pass303'),
-(7, 'AV', 'pacient', 'andrei.vas@email.com', 'pass404'),
-(8, 'CP', 'pacient', 'carla.pop@email.com', 'pass505'),
-(9, 'MV', 'pacient', 'mihai.vas@email.com', 'pass606'),
-(10, 'SP', 'pacient', 'sofia.pop@email.com', 'pass707'),
-(11, 'DR1', 'doctor', 'dr1@email.com', 'drpass1'),
-(12, 'DR2', 'doctor', 'dr2@email.com', 'drpass2'),
-(13, 'ADM', 'admin', 'admin@email.com', 'adminpass');
+INSERT INTO Users (USER_ID, Acronim, Rol, Email, Parola, Activ) VALUES
+(1, 'AP', 'PACIENT', 'ana.pop@email.com', 'ciscosecpa55', TRUE),
+(2, 'IM', 'PACIENT', 'ion.matei@email.com', 'ciscoconpa55', TRUE),
+(3, 'MP', 'PACIENT', 'maria.pop@email.com', 'Admin01pa55', TRUE),
+(4, 'DR', 'PACIENT', 'dan.rosu@email.com', 'pass101', FALSE),
+(5, 'EP', 'PACIENT', 'elena.pop@email.com', 'pass202', TRUE),
+(6, 'GV', 'PACIENT', 'george.vas@email.com', 'pass303', TRUE),
+(7, 'AV', 'PACIENT', 'andrei.vas@email.com', 'pass404', TRUE),
+(8, 'CP', 'PACIENT', 'carla.pop@email.com', 'pass505', TRUE),
+(9, 'MV', 'PACIENT', 'mihai.vas@email.com', 'pass606', TRUE),
+(10, 'SP', 'PACIENT', 'sofia.pop@email.com', 'pass707', TRUE),
+(11, 'DR1', 'DOCTOR', 'dr1@email.com', 'drpass1', TRUE),
+(12, 'DR2', 'DOCTOR', 'dr2@email.com', 'drpass2', FALSE),
+(13, 'ADM', 'ADMIN', 'admin@email.com', 'adminpass', TRUE);
+
+
+
 
 
 INSERT INTO Simptome (ID_SIMPTOM, Nume, Gravitate, Durata) VALUES
@@ -164,16 +169,16 @@ INSERT INTO Analize (ID_ANALIZA, USER_ID, Tip_Analiza, Data_Analiza, Rezultat) V
 
 
 INSERT INTO Consultatie (ID_CONSULTATIE, ID_Pacient, ID_Doctor, Nota, Aprobat, Data_consultatie) VALUES
-(1, 1, 11, 'Febra mare, analize OK', 1, '2025-03-11 09:00'),
-(2, 2, 11, 'Tuse persistenta', 0, '2025-03-11 10:00'),
-(3, 3, 11, 'Durere cap, analize OK', 1, '2025-03-11 11:00'),
-(4, 4, 12, 'Greata, anemie detectata', 0, '2025-03-12 09:00'),
-(5, 5, 12, 'Oboseala, analize OK', 1, '2025-03-12 10:00'),
-(6, 6, 12, 'Durere gat, pneumonie', 0, '2025-03-12 11:00'),
-(7, 7, 11, 'Frisoane, analize OK', 1, '2025-03-13 09:00'),
-(8, 8, 11, 'Durere piept, glicemie', 0, '2025-03-13 10:00'),
-(9, 9, 12, 'Ameteala, analize OK', 1, '2025-03-13 11:00'),
-(10, 10, 12, 'Insomnie, analize OK', 1, '2025-03-14 09:00');
+(1, 1, 11, 'Febra mare, analize OK', TRUE, '2025-03-11 09:00'),
+(2, 2, 11, 'Tuse persistenta', FALSE, '2025-03-11 10:00'),
+(3, 3, 11, 'Durere cap, analize OK', TRUE, '2025-03-11 11:00'),
+(4, 4, 12, 'Greata, anemie detectata', FALSE, '2025-03-12 09:00'),
+(5, 5, 12, 'Oboseala, analize OK', TRUE, '2025-03-12 10:00'),
+(6, 6, 12, 'Durere gat, pneumonie', FALSE, '2025-03-12 11:00'),
+(7, 7, 11, 'Frisoane, analize OK', TRUE, '2025-03-13 09:00'),
+(8, 8, 11, 'Durere piept, glicemie', FALSE, '2025-03-13 10:00'),
+(9, 9, 12, 'Ameteala, analize OK', TRUE, '2025-03-13 11:00'),
+(10, 10, 12, 'Insomnie, analize OK', TRUE, '2025-03-14 09:00');
 
 INSERT INTO Simptome_Pacient (ID, ID_Pacient, ID_Simptom, Data_Raportare) VALUES
 (1, 1, 1, '2025-03-01 08:00'),
@@ -216,9 +221,9 @@ SELECT s.Nume, s.Gravitate, s.Durata, sp.Data_Raportare
 FROM Simptome_Pacient sp
 JOIN Simptome s ON sp.ID_Simptom = s.ID_SIMPTOM
 WHERE sp.ID_Pacient = 1;
-
-SELECT d.Nume, d.Gravitate, dp.Data_Diagnostic
-FROM Diagnostic_Pacient dp
-JOIN Diagnostic d ON dp.ID_Diagnostic = d.ID_DIAGNOSTIC
-WHERE dp.ID_Pacient = 1;
+--
+-- SELECT d.Nume, d.Gravitate, dp.Data_Diagnostic
+-- FROM Diagnostic_Pacient dp
+-- JOIN Diagnostic d ON dp.ID_Diagnostic = d.ID_DIAGNOSTIC
+-- WHERE dp.ID_Pacient = 1;
 

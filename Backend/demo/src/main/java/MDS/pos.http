@@ -1,2 +1,14 @@
-DELETE http://localhost:8080/api/users/delete/1
+#
+#POST http://localhost:8080/api/diagnosis
+#Content-Type: application/json
+#{
+#"idPacient": 1,
+#"symptoms": "Am febră și tuse",
+#"idDoctor": 2
+#}
+POST http://localhost:5000/predict
 Content-Type: application/json
+
+{
+  "symptoms": "Am palpitatii si durere de cap, dar nu am tuse"
+}
