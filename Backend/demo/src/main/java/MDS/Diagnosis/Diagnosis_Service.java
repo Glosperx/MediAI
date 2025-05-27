@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class Diagnosis_Service {
@@ -95,4 +96,130 @@ public class Diagnosis_Service {
         }
     }
 
+    @Transactional
+    public void saveDiagnosisToDatabase(Diagnosis_Response diagnosisResponse, Long pacientId) {
+        logger.info("Entering saveDiagnosisToDatabase for patient ID: {}", pacientId);
+        try {
+            logger.info("Saving diagnosis to database for patient ID: {}", pacientId);
+
+            // Găsim pacientul
+            User pacient = userRepository.findById(pacientId)
+                    .orElseThrow(() -> new RuntimeException("Pacient not found with ID: " + pacientId));
+
+            // Găsim primul doctor disponibil
+            User doctor = userRepository.findFirstByRol("DOCTOR")
+                    .orElseThrow(() -> new RuntimeException("No doctor available in the system"));
+
+
+            Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+
+            // 1. Creăm și salvăm consultația mai întâi
+            Consultatie consultatie = new Consultatie();
+            consultatie.setPacient(pacient);
+            consultatie.setDoctor(doctor); // Setăm doctorul ÎNAINTE de a salva
+            consultatie.setDataConsultatie(currentTime);
+            consultatie.setAprobat(false);
+
+            // Salvăm consultația
+            Consultatie savedConsultatie = consultatieRepository.save(consultatie);
+            logger.info("Created consultation with ID: {} for patient: {}", savedConsultatie.getId(), pacient.getEmail());
+
+
+            logger.info("Created new consultation with ID: {} for patient: {} and doctor: {}",
+                    consultatie.getId(), pacient.getAcronim(), doctor.getAcronim());
+
+            // 2. Salvăm diagnosticele cu probabilitățile lor
+            if (diagnosisResponse.getProbabilities() != null && !diagnosisResponse.getProbabilities().isEmpty()) {
+                for (Map.Entry<String, Double> entry : diagnosisResponse.getProbabilities().entrySet()) {
+                    final String diagnosticName = entry.getKey();
+                    Double probabilitate = entry.getValue();
+
+                    // Căutăm sau creăm diagnosticul
+                    Diagnostic diagnostic = diagnosticRepository.findByNume(diagnosticName)
+                            .orElseGet(() -> {
+                                Diagnostic newDiagnostic = new Diagnostic();
+                                newDiagnostic.setNume(diagnosticName);
+                                return diagnosticRepository.save(newDiagnostic);
+                            });
+
+                    // Salvăm legătura pacient-diagnostic
+                    Diagnostic_Pacient diagnosticPacient = new Diagnostic_Pacient();
+                    diagnosticPacient.setPacient(pacient);
+                    diagnosticPacient.setDiagnostic(diagnostic);
+                    diagnosticPacient.setProbabilitate(probabilitate);
+                    diagnosticPacient.setDataDiagnostic(currentTime);
+                    diagnosticPacientRepository.save(diagnosticPacient);
+
+                    logger.info("Saved diagnostic {} with probability {}", diagnosticName, probabilitate);
+                }
+            }
+
+            // 3. Salvăm simptomele identificate
+            if (diagnosisResponse.getIdentifiedSymptoms() != null) {
+                for (String symptomName : diagnosisResponse.getIdentifiedSymptoms()) {
+                    // Căutăm sau creăm simptomul
+                    Simptom simptom = simptomRepository.findByNume(symptomName)
+                            .orElseGet(() -> {
+                                Simptom newSimptom = new Simptom();
+                                newSimptom.setNume(symptomName);
+                                return simptomRepository.save(newSimptom);
+                            });
+
+                    // Salvăm legătura pacient-simptom
+                    Simptom_Pacient simptomPacient = new Simptom_Pacient();
+                    simptomPacient.setPacient(pacient);
+                    simptomPacient.setSimptom(simptom);
+                    simptomPacient.setDataRaportare(currentTime);
+                    simptomPacientRepository.save(simptomPacient);
+
+                    logger.info("Saved identified symptom: {}", symptomName);
+                }
+            }
+
+            // 4. Salvăm medicația recomandată
+            if (diagnosisResponse.getMedication() != null && !diagnosisResponse.getMedication().trim().isEmpty()) {
+                String[] medicatii = diagnosisResponse.getMedication().split(",");
+
+                for (String medicationName : medicatii) {
+                    String medicatieName = medicationName.trim();
+
+                    if (!medicatieName.isEmpty()) {
+                        // Căutăm sau creăm medicația
+                        Medicatie medicatie = medicatieRepository.findByNume(medicatieName)
+                                .orElseGet(() -> {
+                                    Medicatie newMedicatie = new Medicatie();
+                                    newMedicatie.setNume(medicatieName);
+                                    return medicatieRepository.save(newMedicatie);
+                                });
+
+                        // Salvăm legătura pacient-medicație
+                        Medicatie_Pacient medicatiePacient = new Medicatie_Pacient();
+                        medicatiePacient.setPacient(pacient);
+                        medicatiePacient.setPrescriptie(medicatie);
+                        medicatiePacient.setDataPrescriere(currentTime);
+                        medicatiePacientRepository.save(medicatiePacient);
+
+                        logger.info("Saved medication: {}", medicatieName);
+                    }
+                }
+            }
+
+            logger.info("Successfully saved all diagnosis data to database");
+
+        } catch (Exception e) {
+            logger.error("Error saving diagnosis to database: {}", e.getMessage(), e);
+            throw new RuntimeException("Error saving diagnosis to database: " + e.getMessage(), e);
+        }
+    }
+
+    @Transactional
+    public Diagnosis_Response getDiagnosisAndSave(Diagnosis_Request request, Long pacientId) {
+        // Obținem diagnosticul de la AI
+        Diagnosis_Response response = getDiagnosis(request);
+
+        // Îl salvăm în baza de date
+        saveDiagnosisToDatabase(response, pacientId);
+
+        return response;
+    }
 }

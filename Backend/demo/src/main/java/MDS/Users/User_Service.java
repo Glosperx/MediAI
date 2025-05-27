@@ -16,7 +16,7 @@ public class User_Service {
     private static final Logger logger = LoggerFactory.getLogger(User_Service.class);
     private final User_Repository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final List<String> VALID_ROLES = Arrays.asList("ADMIN", "USER"); // Add "DOCTOR" if allowed
+    private static final List<String> VALID_ROLES = Arrays.asList("ADMIN", "DOCTOR", "PACIENT");
 
     // Constructor cu dependințe injectate
     public User_Service(User_Repository userRepository, @Lazy PasswordEncoder passwordEncoder) {
@@ -97,4 +97,38 @@ public class User_Service {
         logger.debug("Verificare email {}: {}", email, exists);
         return exists;
     }
+
+    @Transactional
+    public User createAdmin(String email, String parola) {
+        logger.info("Creare cont admin: {}", email);
+
+        // Verifică doar dacă email-ul există
+        if (userRepository.existsByEmail(email)) {
+            logger.error("Email-ul există deja: {}", email);
+            throw new IllegalArgumentException("Email-ul este deja înregistrat: " + email);
+        }
+
+        // Validare email
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Email invalid");
+        }
+
+        // Validare parolă
+        if (parola == null || parola.length() < 8) {
+            throw new IllegalArgumentException("Parola trebuie să aibă cel puțin 8 caractere");
+        }
+
+        User admin = new User();
+        admin.setAcronim("ADM");
+        admin.setRol("ADMIN");
+        admin.setEmail(email);
+        admin.setParola(passwordEncoder.encode(parola));
+        admin.setActiv(true);
+
+        userRepository.save(admin);
+        logger.info("Admin creat cu succes: {}", admin);
+
+        return admin;
+    }
 }
+

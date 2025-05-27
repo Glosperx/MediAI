@@ -1,13 +1,3 @@
-#
-#POST http://localhost:8080/api/diagnosis
-#Content-Type: application/json
-#{
-#"idPacient": 1,
-#"symptoms": "Am febră și tuse",
-#"idDoctor": 2
-#}
-
-
 #POST http://localhost:5000/predict
 #Content-Type: application/json
 #
@@ -16,12 +6,15 @@
 #}
 
 
-#Creare admin
+#Create admin
+#Complete with your data
 POST http://localhost:8080/api/auth/create-admin
 Content-Type: application/json
 
 {
   "secretKey": "Ciscosecpa55",
-  "email": "alexandrucojoaca1@gmail.com",
-  "password": "Admin01pa5"
+  "email": "",
+  "password": ""
 }
+
+

@@ -4,20 +4,34 @@ import MDS.Diagnosis.Diagnosis_Email_Service;
 import MDS.Diagnosis.Diagnosis_Request;
 import MDS.Diagnosis.Diagnosis_Response;
 import MDS.Diagnosis.Diagnosis_Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static javax.crypto.Cipher.SECRET_KEY;
+
 @Controller
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final String SECRET_KEY = "Ciscosecpa55";
 
     private final Diagnosis_Email_Service diagnosisEmailService;
     private final User_Service userService;
@@ -40,7 +54,6 @@ public class AuthController {
         this.diagnosisService = diagnosisService;
         this.diagnosisEmailService = diagnosisEmailService;
     }
-
 
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
@@ -192,8 +205,39 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/dashboard")
+    public String showDashboard() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilizator nu a fost găsit"));
+
+        switch (currentUser.getRol()) {
+            case "PACIENT":
+                return "redirect:/predict";
+            case "DOCTOR":
+                return "redirect:/consultations"; // Updated to redirect to consultations
+            case "ADMIN":
+                return "redirect:/admin-dashboard";
+            default:
+                return "redirect:/custom-login?error";
+        }
+    }
+
     @GetMapping("/predict")
     public String showPredictForm(Model model) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilizator nu a fost găsit"));
+
+        // Only patients can access predictions
+        if (!"PACIENT".equals(currentUser.getRol())) {
+            if ("DOCTOR".equals(currentUser.getRol())) {
+                return "redirect:/consultations";
+            }
+            model.addAttribute("error", "Accesul interzis! Doar pacienții pot efectua predicții.");
+            return "error";
+        }
+
         model.addAttribute("diagnosisRequest", new Diagnosis_Request());
         return "predict";
     }
@@ -202,18 +246,68 @@ public class AuthController {
     public String submitPrediction(@ModelAttribute("diagnosisRequest") Diagnosis_Request request,
                                    Model model) {
         try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            User currentUser = userService.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Utilizator nu a fost găsit"));
+
+            // Verify if the user is a patient
+            if (!"PACIENT".equals(currentUser.getRol())) {
+                model.addAttribute("error", "Doar pacienții pot efectua predicții!");
+                return "error";
+            }
+
             Diagnosis_Response response = diagnosisService.getDiagnosis(request);
             model.addAttribute("prediction", response);
 
-            // Cea mai simplă variantă de a obține emailul utilizatorului logat
-            String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
             diagnosisEmailService.sendDiagnosisEmail(email, response);
+
+            Long pacientId = currentUser.getUserId();
+            Diagnosis_Response response1 = diagnosisService.getDiagnosisAndSave(request, pacientId);
+            model.addAttribute("prediction", response1);
 
             return "predict";
         } catch (Exception e) {
             model.addAttribute("error", "Eroare la obținerea predicției: " + e.getMessage());
             return "predict";
+        }
+    }
+
+    // Helper method to check if current user is a doctor
+    private boolean isDoctor() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            String email = auth.getName();
+            return userService.findByEmail(email)
+                    .map(user -> "DOCTOR".equals(user.getRol()))
+                    .orElse(false);
+        }
+        return false;
+    }
+
+    @PostMapping("/api/auth/create-admin")
+    public ResponseEntity<?> createAdmin(@RequestBody CreateAdminRequest request) {
+        if (!SECRET_KEY.equals(request.getSecretKey())) {
+            logger.warn("Încercare de creare admin cu cheie invalidă");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Cheie secretă invalidă"));
+        }
+
+        try {
+            User admin = userService.createAdmin(request.getEmail(), request.getPassword());
+
+            return ResponseEntity.ok()
+                    .body(Map.of(
+                            "message", "Admin creat cu succes",
+                            "email", admin.getEmail()
+                    ));
+        } catch (IllegalArgumentException e) {
+            logger.error("Eroare la validare: {}", e.getMessage());
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            logger.error("Eroare neașteptată la crearea adminului", e);
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "Eroare internă la crearea adminului"));
         }
     }
 

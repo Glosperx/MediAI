@@ -1,2 +1,4 @@
 # Ignore application.properties (real config)
 Backend/demo/src/main/resources/application.properties
+
+Backend/demo/src/main/java/MDS/pos.http
