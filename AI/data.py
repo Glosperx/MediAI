@@ -1,22 +1,25 @@
+# data.py - Modulul pentru procesarea datelor si NLP
+# Gestioneaza incarcarea datelor, procesarea input-ului utilizator si extragerea simptomelor
+
 import pandas as pd
 import re
-# Păstrăm pentru compatibilitate viitoare
+# Pastram pentru compatibilitate viitoare
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
-# Partea 1: Citirea datelor și interfața utilizator
-
 def load_data(file_path):
     """
-    Încarcă datele din CSV
+    Incarca datele din fisierul CSV
+    Returneaza: pandas DataFrame cu datele medicale
     """
     data = pd.read_csv(file_path)
     return data
 
 def remove_diacritics(text):
     """
-    Elimină diacriticele din text
+    Elimina diacriticele romanesti din text pentru matching mai bun
+    Aceasta functie ajuta la potrivirea input-ului utilizator indiferent de folosirea accentelor
     """
     diacritics_map = {
         'ă': 'a', 'â': 'a', 'î': 'i', 'ș': 's', 'ț': 't',
@@ -28,15 +31,23 @@ def remove_diacritics(text):
 
 def check_symptom_match(text, start_idx, symptom, words):
     """
-    Verifică dacă un simptom se potrivește în text, începând de la start_idx.
-    Returnează True dacă se potrivește, False altfel.
+    Verifica daca un simptom se potriveste in text incepand de la start_idx
+    Permite recunoasterea simptomelor cu mai multe cuvinte (ex: "durere de cap")
+    
+    Argumente:
+        text: textul complet de input
+        start_idx: pozitia de start in array-ul de cuvinte
+        symptom: simptomul de potrivit
+        words: array-ul de cuvinte din text
+    
+    Returneaza: True daca simptomul se potriveste, False altfel
     """
     symptom_lower = symptom.lower()
     symptom_no_diacritics = remove_diacritics(symptom_lower)
     symptom_words = symptom_no_diacritics.split()
     match_length = len(symptom_words)
     
-    # Verificăm dacă mai sunt suficiente cuvinte în text
+    # Verificam daca mai sunt suficiente cuvinte in text
     if start_idx + match_length <= len(words):
         # Extragem fraza din text
         phrase = ' '.join(words[start_idx:start_idx + match_length])
@@ -46,42 +57,48 @@ def check_symptom_match(text, start_idx, symptom, words):
 
 def extract_symptoms_from_text(text, available_symptoms):
     """
-    Extrage simptomele din textul introdus de utilizator, gestionând negațiile până la următorul simptom.
-    Returnează un dicționar cu simptomele și starea lor (1 pentru prezent, 0 pentru absent/negat).
+    Extrage simptomele din textul introdus de utilizator, gestionand negatiile
+    Aceasta este functia NLP centrala care converteste limbajul natural in caracteristici ML
+    
+    Argumente:
+        text: input-ul utilizatorului care descrie simptomele
+        available_symptoms: lista cu toate simptomele posibile
+    
+    Returneaza: dictionar cu simptomele si starea lor (1=prezent, 0=absent/negat)
     """
     text = text.lower().strip()
-    # Înlocuim punctuația cu spații
+    # Inlocuim punctuatia cu spatii pentru separarea mai buna a cuvintelor
     text = re.sub(r'[.,;:!?()-]', ' ', text)
     
-    # Lista de negații
-    negations = ['nu', 'fără', 'nici', 'n-am', 'n-avea', 'n-are']
+    # Cuvintele de negatie romanesti
+    negations = ['nu', 'fara', 'nici', 'n-am', 'n-avea', 'n-are']
     
-    # Dicționar pentru a stoca starea simptomelor (1 = prezent, 0 = absent/negat)
+    # Dictionar pentru a stoca starea simptomelor (1 = prezent, 0 = absent/negat)
     symptom_status = {symptom: 0 for symptom in available_symptoms}
     
-    # Împărțim textul în cuvinte
+    # Impartim textul in cuvinte
     words = text.split()
     
-    # Variabilă pentru a ține evidența negației active
+    # Variabila pentru a tine evidenta starii de negatie active
     is_negated = False
     
-    # Procesăm textul cuvânt cu cuvânt
+    # Procesam textul cuvant cu cuvant
     for i in range(len(words)):
-        # Verificăm dacă cuvântul este o negație
+        # Verificam daca cuvantul curent este o negatie
         if words[i] in negations:
             is_negated = True
             continue
         
-        # Verificăm dacă poziția curentă începe un simptom
+        # Verificam daca pozitia curenta incepe un simptom
         for symptom in available_symptoms:
             if check_symptom_match(text, i, symptom, words):
-                # Setăm starea simptomului
+                # Setam starea simptomului pe baza negatiei
                 if is_negated:
-                    symptom_status[symptom] = 0
+                    symptom_status[symptom] = 0  # Explicit negat
                 else:
-                        symptom_status[symptom] = 1
+                    symptom_status[symptom] = 1  # Prezent
 
-                # Resetăm negația pentru următorul simptom
+                # Resetam negatia pentru urmatorul simptom
                 is_negated = False
                 break
     
@@ -89,22 +106,22 @@ def extract_symptoms_from_text(text, available_symptoms):
 
 def get_user_symptoms(available_symptoms):
     """
-    Permite utilizatorului să introducă simptomele și returnează un vector de simptome procesate.
+    Functie interactiva pentru a obtine simptomele de la utilizator (pentru linia de comanda)
     """
-    print("\n=== DESCRIEȚI SIMPTOMELE ===")
-    print("Descrieți cum vă simțiți cu propriile cuvinte.")
-    print("Exemplu: 'Am febră și tuse, dar nu am durere de cap.' :D")
+    print("\n=== DESCRIETI SIMPTOMELE ===")
+    print("Descrieti cum va simtiti cu propriile cuvinte.")
+    print("Exemplu: 'Am febra si tuse, dar nu am durere de cap.' :D")
     
     user_input = input("Descriere: ").strip()
     
     if not user_input:
-        print("Nu ați introdus nicio descriere!")
+        print("Nu ati introdus nicio descriere!")
         return None
     
     # Extragem simptomele
     symptom_status = extract_symptoms_from_text(user_input, available_symptoms)
     
-    # Afișăm simptomele identificate
+    # Afisam simptomele identificate
     identified_symptoms = [s for s, v in symptom_status.items() if v == 1]
     negated_symptoms = [s for s, v in symptom_status.items() if v == 0 and s.lower() in user_input.lower()]
     
@@ -115,25 +132,25 @@ def get_user_symptoms(available_symptoms):
         for symptom in negated_symptoms:
             print(f"- {symptom} (negat/absent)")
     else:
-        print("\nNu am putut identifica simptome specifice. Încercați să folosiți termeni mai clari.")
+        print("\nNu am putut identifica simptome specifice. Incercati sa folositi termeni mai clari.")
     
-    # Convertim în DataFrame pentru compatibilitate viitoare
+    # Convertim in DataFrame pentru compatibilitatea cu modelul
     return pd.DataFrame([symptom_status])
 
 # Exemplu de utilizare
 if __name__ == "__main__":
-    # Încărcăm datele
-    data = load_data("data\diagnoses_symptoms_medications.csv")
+    # Incarcam datele
+    data = load_data("data/diagnoses_symptoms_medications.csv")
     
-    # Afișăm primele 5 rânduri pentru verificare
-    print("\nPrimele 5 rânduri din setul de date:")
+    # Afisam primele 5 randuri pentru verificare
+    print("\nPrimele 5 randuri din setul de date:")
     print(data.head())
     
-    # Extragem simptomele (coloanele, mai puțin 'diagnosis' și 'medications')
+    # Extragem simptomele (coloanele, mai putin 'diagnosis' si 'medications')
     symptoms = [col for col in data.columns if col not in ['diagnosis', 'medications']]
-    print(f"\nAu fost identificate {len(symptoms)} simptome în setul de date.")
+    print(f"\nAu fost identificate {len(symptoms)} simptome in setul de date.")
     
-    # Obținem simptomele de la utilizator
+    # Obtinem simptomele de la utilizator
     user_data = get_user_symptoms(symptoms)
     
     if user_data is not None:

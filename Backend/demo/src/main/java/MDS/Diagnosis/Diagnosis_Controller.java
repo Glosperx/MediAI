@@ -27,10 +27,10 @@ public class Diagnosis_Controller {
         try {
             logger.info("Received diagnosis request for patient ID: {}", pacientId);
 
-            // Obține diagnosticul și salvează-l automat în baza de date
+            // Obtine diagnosticul si il salveaza in vaza de date
             Diagnosis_Response response = diagnosisService.getDiagnosisAndSave(request, pacientId);
 
-            // Trimite email-ul dacă este specificat
+            // Trimite email daca e specificat
             if (email != null && !email.isEmpty()) {
                 diagnosisEmailService.sendDiagnosisEmail(email, response);
                 logger.info("Diagnosis email sent to: {}", email);

@@ -1,173 +1,205 @@
 <!DOCTYPE html>
+<!-- Declaram tipul de document HTML5 -->
 <html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<!-- Setam limba romana si namespace-ul pentru Thymeleaf (framework Java pentru template-uri) -->
 <head>
     <meta charset="UTF-8">
+    <!-- Setam encodingul pentru caractere romanesti -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Face pagina responsive pe mobile -->
     <title>Înregistrare - MDS</title>
+    <!-- Titlul paginii care apare in tab-ul browserului -->
+
     <style>
+        /* RESET CSS - elimina margin si padding default din browser */
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            box-sizing: border-box; /* Include border si padding in dimensiunile elementului */
         }
 
+        /* STILIZAREA CORPULUI PAGINII */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font modern */
+            background: linear-gradient(135deg, #2ab4a2 0%, #2546a5 100%); /* Gradient frumos albastru-violet */
+            min-height: 100vh; /* Inaltimea minima = inaltimea ecranului */
+            display: flex; /* Folosim flexbox pentru centrare */
+            justify-content: center; /* Centreaza orizontal */
+            align-items: center; /* Centreaza vertical */
         }
 
+        /* CONTAINERUL PRINCIPAL AL FORMULARULUI */
         .register-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-            animation: slideUp 0.5s ease-out;
+            background: white; /* Fundal alb pentru contrast */
+            padding: 2rem; /* Spatiu interior generos */
+            border-radius: 15px; /* Colturi rotunjite */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* Umbra subtila pentru profunzime */
+            width: 100%; /* Latimea maxima disponibila */
+            max-width: 400px; /* Dar nu mai mare de 400px */
+            animation: slideUp 0.5s ease-out; /* Animatie de aparitie */
         }
 
+        /* ANIMATIA DE APARITIE A CONTAINERULUI */
         @keyframes slideUp {
             from {
-                opacity: 0;
-                transform: translateY(30px);
+                opacity: 0; /* Incepe transparent */
+                transform: translateY(30px); /* Si mutat in jos cu 30px */
             }
             to {
-                opacity: 1;
-                transform: translateY(0);
+                opacity: 1; /* Devine vizibil */
+                transform: translateY(0); /* Si revine la pozitia normala */
             }
         }
 
+        /* HEADER-UL CU TITLUL */
         .register-header {
-            text-align: center;
-            margin-bottom: 2rem;
+            text-align: center; /* Text centrat */
+            margin-bottom: 2rem; /* Spatiu sub header */
         }
 
         .register-header h1 {
-            color: #333;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            color: #333; /* Culoare gri inchis */
+            font-size: 2rem; /* Dimensiune mare pentru titlu */
+            margin-bottom: 0.5rem; /* Spatiu mic sub titlu */
         }
 
         .register-header p {
-            color: #666;
-            font-size: 0.9rem;
+            color: #666; /* Gri mai deschis pentru subtitlu */
+            font-size: 0.9rem; /* Dimensiune mai mica */
         }
 
+        /* GRUPURILE DE CAMPURI DIN FORMULAR */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5rem; /* Spatiu intre campuri */
         }
 
+        /* ETICHETELE CAMPURILOR */
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
+            display: block; /* Pe linie separata */
+            margin-bottom: 0.5rem; /* Spatiu sub eticheta */
+            color: #333; /* Culoare gri inchis */
+            font-weight: 500; /* Semi-bold */
         }
 
+        /* STILIZAREA INPUT-URILOR SI SELECT-URILOR */
         .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            width: 100%; /* Latimea completa */
+            padding: 0.75rem; /* Spatiu interior pentru confort */
+            border: 2px solid #e1e5e9; /* Bordura subtila gri */
+            border-radius: 8px; /* Colturi rotunjite */
+            font-size: 1rem; /* Dimensiune normala de font */
+            transition: border-color 0.3s ease; /* Tranzitie smooth pentru hover/focus */
         }
 
+        /* EFECTUL LA FOCUS (cand utilizatorul face click pe camp) */
         .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none; /* Elimina outline-ul default al browserului */
+            border-color: #667eea; /* Schimba culoarea bordurii la albastru */
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Adauga o umbra subtila albastra */
         }
 
+        /* BUTONUL DE INREGISTRARE */
         .register-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease;
+            width: 100%; /* Latimea completa */
+            padding: 0.75rem; /* Spatiu interior */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Acelasi gradient ca fundalul */
+            color: white; /* Text alb */
+            border: none; /* Fara bordura */
+            border-radius: 8px; /* Colturi rotunjite */
+            font-size: 1rem; /* Dimensiune normala */
+            font-weight: 600; /* Bold */
+            cursor: pointer; /* Cursorul se schimba la hover */
+            transition: transform 0.2s ease; /* Tranzitie pentru animatia de hover */
         }
 
+        /* EFECTUL LA HOVER PENTRU BUTON */
         .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px); /* Se ridica cu 2px */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* Adauga umbra */
         }
 
+        /* EFECTUL LA CLICK PENTRU BUTON */
         .register-btn:active {
-            transform: translateY(0);
+            transform: translateY(0); /* Revine la pozitia normala */
         }
 
+        /* STILURILE PENTRU MESAJELE DE ALERTA */
         .alert {
-            padding: 0.75rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            padding: 0.75rem; /* Spatiu interior */
+            border-radius: 8px; /* Colturi rotunjite */
+            margin-bottom: 1rem; /* Spatiu sub mesaj */
+            font-size: 0.9rem; /* Font mai mic */
         }
 
+        /* MESAJELE DE EROARE (ROSII) */
         .alert-error {
-            background-color: #fee;
-            color: #c33;
-            border: 1px solid #fcc;
+            background-color: #fee; /* Fundal roz deschis */
+            color: #c33; /* Text rosu inchis */
+            border: 1px solid #fcc; /* Bordura roz */
         }
 
+        /* MESAJELE DE SUCCES (VERZI) */
         .alert-success {
-            background-color: #efe;
-            color: #363;
-            border: 1px solid #cfc;
+            background-color: #efe; /* Fundal verde deschis */
+            color: #363; /* Text verde inchis */
+            border: 1px solid #cfc; /* Bordura verde */
         }
 
+        /* LINKUL CATRE PAGINA DE LOGIN */
         .login-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #666;
+            text-align: center; /* Text centrat */
+            margin-top: 1.5rem; /* Spatiu deasupra */
+            color: #666; /* Culoare gri */
         }
 
         .login-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
+            color: #667eea; /* Linkul are culoarea albastra din tema */
+            text-decoration: none; /* Fara subliniere */
+            font-weight: 500; /* Semi-bold */
         }
 
         .login-link a:hover {
-            text-decoration: underline;
+            text-decoration: underline; /* Subliniaza la hover */
         }
 
+        /* STILURI SPECIFICE PENTRU SELECT */
         .form-group select {
-            background-color: white;
-            cursor: pointer;
+            background-color: white; /* Fundal alb */
+            cursor: pointer; /* Cursorul se schimba */
         }
 
         .form-group select option {
-            padding: 0.5rem;
+            padding: 0.5rem; /* Spatiu pentru optiuni */
         }
 
+        /* STILUL PENTRU ASTERISCUL DE CAMP OBLIGATORIU */
         .required {
-            color: #e74c3c;
+            color: #e74c3c; /* Rosu pentru a indica ca e obligatoriu */
         }
     </style>
 </head>
 <body>
+<!-- CONTAINERUL PRINCIPAL -->
 <div class="register-container">
+    <!-- HEADER-UL CU TITLUL SI SUBTITLUL -->
     <div class="register-header">
         <h1>Înregistrare</h1>
         <p>Creează un cont nou pentru a accesa platforma MDS</p>
     </div>
 
-    <!-- Mesaje de eroare -->
+    <!-- AFISAREA MESAJELOR DE EROARE (DOAR DACA EXISTA) -->
+    <!-- th:if verifica daca variabila 'error' exista si are continut -->
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
-    <!-- Mesaje de succes -->
+    <!-- AFISAREA MESAJELOR DE SUCCES (DOAR DACA EXISTA) -->
+    <!-- th:if verifica daca variabila 'message' exista si are continut -->
     <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
 
+    <!-- FORMULARUL DE INREGISTRARE -->
+    <!-- th:action specifica unde se trimit datele (la /register via POST) -->
     <form th:action="@{/register}" method="post">
+
+        <!-- SELECTAREA TIPULUI DE CONT -->
         <div class="form-group">
             <label for="rol">Tip cont <span class="required">*</span></label>
             <select id="rol" name="rol" required>
@@ -177,6 +209,7 @@
             </select>
         </div>
 
+        <!-- CAMPUL PENTRU ACRONIM -->
         <div class="form-group">
             <label for="acronim">Acronim <span class="required">*</span></label>
             <input type="text"
@@ -187,6 +220,7 @@
                    placeholder="Ex: ABC123">
         </div>
 
+        <!-- CAMPUL PENTRU EMAIL -->
         <div class="form-group">
             <label for="email">Email <span class="required">*</span></label>
             <input type="email"
@@ -197,6 +231,7 @@
                    placeholder="numele@exemplu.com">
         </div>
 
+        <!-- CAMPUL PENTRU PAROLA -->
         <div class="form-group">
             <label for="parola">Parolă <span class="required">*</span></label>
             <input type="password"
@@ -207,11 +242,13 @@
                    placeholder="Minim 6 caractere">
         </div>
 
+        <!-- BUTONUL DE TRIMITERE A FORMULARULUI -->
         <button type="submit" class="register-btn">
             Înregistrează-te
         </button>
     </form>
 
+    <!-- LINKUL CATRE PAGINA DE LOGIN -->
     <div class="login-link">
         <p>Ai deja cont? <a href="/custom-login">Autentifică-te aici</a></p>
     </div>

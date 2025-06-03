@@ -13,7 +13,7 @@ public class VerificationToken {
     private String email;
     private LocalDateTime expiryDate;
 
-    // Getters și Setters
+    // Getters si Setters
 
     public Long getId() {
         return id;

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+<!-- Declararea documentului HTML cu limba romana si namespace Thymeleaf -->
 <html lang="ro" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Predicție - MediAI</title>
     <style>
+        /* Stilizarea body-ului cu gradient de fundal si centrarea continutului */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -14,6 +16,8 @@
             padding: 20px;
             box-sizing: border-box;
         }
+
+        /* Containerul principal pentru continutul paginii */
         .container {
             background: white;
             padding: 2rem;
@@ -22,11 +26,15 @@
             width: 100%;
             max-width: 700px;
         }
+
+        /* Stilizarea titlului principal */
         h1 {
             color: #333;
             text-align: center;
             margin-bottom: 1rem;
         }
+
+        /* Stilizarea mesajelor de eroare */
         .alert-error {
             color: #c33;
             background-color: #fee;
@@ -35,15 +43,21 @@
             border-radius: 8px;
             margin-bottom: 1rem;
         }
+
+        /* Stilizarea grupurilor din formular */
         .form-group {
             margin-bottom: 1.5rem;
         }
+
+        /* Stilizarea label-urilor */
         label {
             display: block;
             margin-bottom: 0.5rem;
             color: #333;
             font-weight: 500;
         }
+
+        /* Stilizarea textarea-ului pentru simptome */
         textarea {
             width: 100%;
             padding: 0.75rem;
@@ -53,6 +67,8 @@
             min-height: 100px;
             box-sizing: border-box;
         }
+
+        /* Stilizarea butonului de submit */
         button {
             width: 100%;
             padding: 0.75rem;
@@ -64,9 +80,13 @@
             font-size: 16px;
             transition: opacity 0.3s ease;
         }
+
+        /* Efectul de hover pentru buton */
         button:hover {
             opacity: 0.9;
         }
+
+        /* Containerul pentru rezultatele predictiei */
         .prediction {
             margin-top: 1.5rem;
             padding: 1.5rem;
@@ -74,6 +94,8 @@
             border-radius: 12px;
             border: 1px solid #c3e4ff;
         }
+
+        /* Stilizarea titlului sectiunii de predictie */
         .prediction h3 {
             color: #2c5aa0;
             margin-top: 0;
@@ -81,6 +103,8 @@
             border-bottom: 2px solid #c3e4ff;
             padding-bottom: 0.5rem;
         }
+
+        /* Stilizarea elementelor individuale din predictie */
         .prediction-item {
             margin-bottom: 1rem;
             padding: 0.75rem;
@@ -88,14 +112,20 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+
+        /* Stilizarea textului bold din elementele de predictie */
         .prediction-item strong {
             color: #2c5aa0;
         }
+
+        /* Stilizarea listei de probabilitati */
         .probabilities-list {
             margin: 0.5rem 0;
             padding-left: 0;
             list-style: none;
         }
+
+        /* Stilizarea elementelor din lista de probabilitati */
         .probabilities-list li {
             padding: 0.4rem 0.8rem;
             margin: 0.3rem 0;
@@ -104,38 +134,52 @@
             border-left: 4px solid #667eea;
         }
 
-        /* Stiluri pentru secțiunea simptomelor */
+        /* Stiluri pentru sectiunea simptomelor identificate */
         .symptoms-section {
             margin-top: 1.5rem;
         }
+
+        /* Container grid pentru organizarea simptomelor */
         .symptoms-container {
             display: grid;
             gap: 1rem;
             grid-template-columns: 1fr;
         }
+
+        /* Layout responsive pentru ecrane mai mari */
         @media (min-width: 768px) {
             .symptoms-container {
                 grid-template-columns: 1fr 1fr;
             }
         }
+
+        /* Stilizarea generala pentru cutiile de simptome */
         .symptoms-box {
             padding: 1rem;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
+
+        /* Stilizarea cutiei pentru simptomele prezente */
         .symptoms-present {
             background: linear-gradient(135deg, #e8f5e8 0%, #f0fdf0 100%);
             border-left: 4px solid #22c55e;
         }
+
+        /* Stilizarea cutiei pentru simptomele negate */
         .symptoms-negated {
             background: linear-gradient(135deg, #ffeaea 0%, #fef2f2 100%);
             border-left: 4px solid #ef4444;
         }
+
+        /* Stilizarea cutiei pentru avertizari */
         .symptoms-warning {
             background: linear-gradient(135deg, #fff3cd 0%, #fefce8 100%);
             border-left: 4px solid #f59e0b;
-            grid-column: 1 / -1;
+            grid-column: 1 / -1; /* Ocupa toata latimea grid-ului */
         }
+
+        /* Stilizarea titlurilor sectiunilor de simptome */
         .symptoms-title {
             font-weight: 600;
             margin-bottom: 0.75rem;
@@ -143,25 +187,37 @@
             align-items: center;
             font-size: 1.1em;
         }
+
+        /* Stilizarea iconurilor din titluri */
         .symptoms-icon {
             margin-right: 0.5rem;
             font-size: 1.3em;
             font-weight: bold;
         }
+
+        /* Culori pentru iconul simptomelor prezente */
         .icon-present {
             color: #16a34a;
         }
+
+        /* Culori pentru iconul simptomelor negate */
         .icon-negated {
             color: #dc2626;
         }
+
+        /* Culori pentru iconul de avertizare */
         .icon-warning {
             color: #d97706;
         }
+
+        /* Stilizarea listelor de simptome */
         .symptoms-list {
             margin: 0;
             padding-left: 0;
             list-style: none;
         }
+
+        /* Stilizarea elementelor din listele de simptome */
         .symptoms-list li {
             padding: 0.5rem 0.75rem;
             margin: 0.3rem 0;
@@ -170,17 +226,25 @@
             font-weight: 500;
             transition: background-color 0.2s ease;
         }
+
+        /* Efectul de hover pentru elementele de simptome */
         .symptoms-list li:hover {
             background: rgba(255, 255, 255, 0.9);
         }
+
+        /* Stilizarea simptomelor prezente din lista */
         .symptom-present {
             color: #15803d;
             border-left: 3px solid #22c55e;
         }
+
+        /* Stilizarea simptomelor negate din lista */
         .symptom-negated {
             color: #b91c1c;
             border-left: 3px solid #ef4444;
         }
+
+        /* Stilizarea textului de avertizare */
         .warning-text {
             color: #92400e;
             font-size: 0.9em;
@@ -188,6 +252,7 @@
             line-height: 1.4;
         }
 
+        /* Stilizarea sectiunii de disclaimer medical */
         .disclaimer {
             margin-top: 1.5rem;
             padding: 1rem;
@@ -198,6 +263,8 @@
             font-size: 0.9em;
             line-height: 1.5;
         }
+
+        /* Stilizarea titlului disclaimer-ului */
         .disclaimer-title {
             font-weight: 600;
             color: #d97706;
@@ -205,11 +272,14 @@
             display: flex;
             align-items: center;
         }
+
+        /* Stilizarea iconului din disclaimer */
         .disclaimer-icon {
             margin-right: 0.5rem;
             font-size: 1.2em;
         }
 
+        /* Stilizarea link-ului de deconectare */
         a {
             color: #667eea;
             text-decoration: none;
@@ -219,72 +289,90 @@
             font-weight: 500;
             transition: color 0.3s ease;
         }
+
+        /* Efectul de hover pentru link */
         a:hover {
             color: #764ba2;
         }
     </style>
 </head>
 <body>
+<!-- Containerul principal al aplicatiei -->
 <div class="container">
+    <!-- Titlul principal al aplicatiei -->
     <h1>MediAI - Predicție Medicală</h1>
 
+    <!-- Afisarea mesajelor de eroare - conditional, doar daca exista -->
     <div th:if="${error}" class="alert-error" th:text="${error}"></div>
 
+    <!-- Formularul pentru introducerea simptomelor -->
+    <!-- th:object leaga formularul de obiectul diagnosisRequest din backend -->
     <form th:action="@{/predict}" th:object="${diagnosisRequest}" method="post">
         <div class="form-group">
             <label for="symptoms">Descrie simptomele tale</label>
+            <!-- Textarea conectat la proprietatea 'symptoms' din obiectul diagnosisRequest -->
             <textarea id="symptoms" th:field="*{symptoms}" required
                       placeholder="Ex. Am palpitații și durere de cap, dar nu am tuse"></textarea>
         </div>
+        <!-- Butonul de submit pentru trimiterea formularului -->
         <button type="submit">Obține Predicție</button>
     </form>
 
-    <!-- Rezultatul predicției -->
+    <!-- Sectiunea pentru rezultatul predictiei - afisata doar daca exista predictie -->
     <div th:if="${prediction}" class="prediction">
         <h3>🔍 Rezultatul Analizei</h3>
 
+        <!-- Afisarea diagnosticului principal identificat de AI -->
         <div class="prediction-item">
             <strong>Diagnostic:</strong> <span th:text="${prediction.diagnosis}"></span>
         </div>
 
+        <!-- Afisarea medicamentului recomandat -->
         <div class="prediction-item">
             <strong>Medicament recomandat:</strong> <span th:text="${prediction.medication}"></span>
         </div>
 
+        <!-- Afisarea probabilitatilor pentru diferite diagnostice -->
         <div class="prediction-item">
             <strong>Probabilități diagnostic:</strong>
+            <!-- Iterarea prin map-ul de probabilitati si afisarea lor -->
             <ul class="probabilities-list">
                 <li th:each="entry : ${prediction.probabilities}">
+                    <!-- Formatarea procentajului cu utilitarul Thymeleaf pentru numere -->
                     <span th:text="${entry.key} + ': ' + ${#numbers.formatPercent(entry.value, 1, 2)}"></span>
                 </li>
             </ul>
         </div>
     </div>
 
-    <!-- Secțiunea pentru simptomele identificate -->
+    <!-- Sectiunea pentru simptomele identificate din text -->
     <div th:if="${prediction}" class="symptoms-section">
         <div class="symptoms-container">
 
-            <!-- Simptome prezente -->
+            <!-- Cutia pentru simptomele identificate ca prezente -->
+            <!-- Afisata doar daca lista nu este null si nu este goala -->
             <div th:if="${prediction.identifiedSymptoms != null and !prediction.identifiedSymptoms.isEmpty()}"
                  class="symptoms-box symptoms-present">
                 <div class="symptoms-title">
                     <span class="symptoms-icon icon-present">✓</span>
                     Simptome identificate ca prezente
                 </div>
+                <!-- Lista cu simptomele prezente -->
                 <ul class="symptoms-list">
                     <li th:each="symptom : ${prediction.identifiedSymptoms}"
                         class="symptom-present" th:text="${symptom}"></li>
                 </ul>
             </div>
 
-            <!-- Simptome negate -->
+            <!-- Cutia pentru simptomele identificate ca absente/negate -->
+            <!-- Afisata doar daca lista nu este null si nu este goala -->
             <div th:if="${prediction.negatedSymptoms != null and !prediction.negatedSymptoms.isEmpty()}"
                  class="symptoms-box symptoms-negated">
                 <div class="symptoms-title">
                     <span class="symptoms-icon icon-negated">✗</span>
                     Simptome identificate ca absente
                 </div>
+                <!-- Lista cu simptomele negate -->
                 <ul class="symptoms-list">
                     <li th:each="symptom : ${prediction.negatedSymptoms}"
                         class="symptom-negated" th:text="${symptom}"></li>
@@ -293,7 +381,8 @@
 
         </div>
 
-        <!-- Mesaj de avertizare dacă nu sunt simptome identificate -->
+        <!-- Mesaj de avertizare cand nu sunt identificate simptome specifice -->
+        <!-- Afisat doar cand ambele liste sunt goale sau null -->
         <div th:if="${(prediction.identifiedSymptoms == null or prediction.identifiedSymptoms.isEmpty())
                      and (prediction.negatedSymptoms == null or prediction.negatedSymptoms.isEmpty())}"
              class="symptoms-box symptoms-warning">
@@ -301,6 +390,7 @@
                 <span class="symptoms-icon icon-warning">⚠</span>
                 Nu au fost identificate simptome specifice
             </div>
+            <!-- Textul explicativ pentru utilizator -->
             <div class="warning-text">
                 Sistemul nu a putut identifica simptome specifice din descrierea ta.
                 Pentru o analiză mai precisă, încearcă să fii mai specific și să folosești
@@ -309,7 +399,7 @@
         </div>
     </div>
 
-    <!-- Disclaimer important -->
+    <!-- Disclaimer-ul medical obligatoriu pentru responsabilitate legala -->
     <div class="disclaimer">
         <div class="disclaimer-title">
             <span class="disclaimer-icon">⚕️</span>
@@ -320,6 +410,7 @@
         Nu luați decizii medicale bazate exclusiv pe această predicție AI.
     </div>
 
+    <!-- Link-ul pentru deconectarea utilizatorului -->
     <a href="/logout">Deconectează-te</a>
 </div>
 </body>

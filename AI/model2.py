@@ -7,42 +7,46 @@ import os
 
 class DiagnosisPredictor:
     """
-    Clasă pentru antrenarea și evaluarea unui model de predicție a diagnosticului medical bazat pe simptome
+    Clasa pentru antrenarea si evaluarea unui model de predictie a diagnosticului medical bazat pe simptome
     """
     def __init__(self):
+        # Initializam modelul RandomForest cu 100 de arbori si seed fix pentru reproducibilitate
         self.model = RandomForestClassifier(n_estimators=100, random_state=15129)
+        # Lista pentru stocarea simptomelor
         self.symptoms = []
+        # Indicator pentru a verifica daca modelul a fost antrenat
         self.trained = False
+        # Calea unde se va salva modelul antrenat
         self.model_path = "diagnosis_model2.pkl"
     
     def train(self, data):
         """
-        Antrenează modelul de predicție utilizând Random Forest
+        Antreneaza modelul folosind datele furnizate
         
         Args:
-            data: DataFrame cu datele de antrenare
+            data: DataFrame cu datele de antrenare (simptome si diagnostic)
         
         Returns:
-            accuracy: Acuratețea modelului pe setul de test
+            accuracy: Acuratetea modelului pe setul de test
         """
-        # Separăm caracteristicile (simptomele) de țintă (diagnosticul)
+        # Separam simptomele (caracteristici) de diagnostic (tinta)
         X = data.drop(['diagnosis', 'medications'], axis=1)
         y = data['diagnosis']
         
-        # Salvăm lista de simptome pentru referințe viitoare
+        # Salvam lista de simptome pentru a le folosi la predictie
         self.symptoms = X.columns.tolist()
         
-        # Împărțim datele în set de antrenare și set de test
+        # Impartim datele in set de antrenare (80%) si test (20%)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=15129)
         
-        # Antrenăm modelul
+        # Antrenam modelul pe datele de antrenare
         self.model.fit(X_train, y_train)
         self.trained = True
         
-        # Salvăm modelul
+        # Salvam modelul antrenat pe disc
         self._save_model()
         
-        # Evaluăm și returnăm acuratețea
+        # Calculam predictiile pe setul de test si returnam acuratetea
         y_pred = self.model.predict(X_test)
         accuracy = np.mean(y_pred == y_test)
         
@@ -50,47 +54,48 @@ class DiagnosisPredictor:
     
     def predict(self, symptoms_data):
         """
-        Prezice diagnosticul pe baza simptomelor
+        Prezice diagnosticul pe baza simptomelor furnizate
         
         Args:
-            symptoms_data: DataFrame sau dicționar cu simptomele pacientului
+            symptoms_data: DataFrame sau dictionar cu simptomele pacientului
         
         Returns:
             diagnosis: Diagnosticul prezis
-            probabilities: Dicționar cu probabilitățile pentru fiecare diagnostic posibil
+            probabilities: Probabilitatile pentru fiecare diagnostic posibil
         """
+        # Verificam daca modelul e antrenat, altfel il incarcam
         if not self.trained:
             self._load_model()
         
-        # Ne asigurăm că simptomele sunt în formatul așteptat
+        # Convertim dictionarul in DataFrame, daca e necesar
         if isinstance(symptoms_data, dict):
             symptoms_data = pd.DataFrame([symptoms_data])
             
-        #Toate simptomele care nu sunt prezente în datele de intrare vor fi setate la 0
+        # Adaugam simptome lipsa cu valoarea 0
         missing_columns = set(self.symptoms) - set(symptoms_data.columns)
         if missing_columns:
             for col in missing_columns:
                 symptoms_data[col] = 0
                 
-        # Reordonăm coloanele pentru a se potrivi cu modelul antrenat
+        # Reordonam coloanele pentru a se potrivi cu ordinea din antrenare
         symptoms_data = symptoms_data[self.symptoms]
         
-        # Facem predicția
+        # Facem predictia diagnosticului
         diagnosis = self.model.predict(symptoms_data)[0]
         
-        # Obținem probabilitățile pentru toate diagnosticele posibile
+        # Calculam probabilitatile pentru toate diagnosticele posibile
         prob_values = self.model.predict_proba(symptoms_data)[0]
         classes = self.model.classes_
         probabilities = {diagnosis: prob for diagnosis, prob in zip(classes, prob_values)}
         
-        # Sortăm probabilitățile în ordine descrescătoare
+        # Sortam probabilitatile in ordine descrescatoare
         probabilities = dict(sorted(probabilities.items(), key=lambda x: x[1], reverse=True))
         
         return diagnosis, probabilities
     
     def _save_model(self):
         """
-        Salvează modelul antrenat pe disc
+        Salveaza modelul antrenat si lista de simptome pe disc
         """
         model_data = {
             'model': self.model,
@@ -100,7 +105,7 @@ class DiagnosisPredictor:
     
     def _load_model(self):
         """
-        Încarcă modelul antrenat de pe disc
+        Incarca modelul si lista de simptome de pe disc
         """
         model_data = joblib.load(self.model_path)
         self.model = model_data['model']
@@ -110,30 +115,31 @@ class DiagnosisPredictor:
 
 def get_diagnosis_and_medication(symptoms_data, data):
     """
-    Funcție principală pentru obținerea diagnosticului și medicației pe baza simptomelor
+    Obtine diagnosticul si medicatia recomandata pe baza simptomelor
     
     Args:
-        symptoms_data: DataFrame sau dicționar cu simptomele pacientului
-        data: DataFrame cu datele de antrenare și diagnostice
+        symptoms_data: DataFrame sau dictionar cu simptomele pacientului
+        data: DataFrame cu datele de antrenare (inclusiv medicatia)
     
     Returns:
-        result: Dicționar cu diagnosticul, probabilitățile și medicația recomandată
+        result: Dictionar cu diagnosticul, probabilitatile si medicatia
     """
+    # Initializam predictorul
     predictor = DiagnosisPredictor()
     
-    # Verificăm dacă modelul există, dacă nu, îl antrenăm
+    # Verificam daca modelul exista, altfel il antrenam
     if not os.path.exists(predictor.model_path):
         predictor.train(data)
     else:
         predictor._load_model()
     
-    # Facem predicția
+    # Obtinem diagnosticul si probabilitatile
     diagnosis, probabilities = predictor.predict(symptoms_data)
     
-    # Obținem medicația din setul de date
+    # Gasim medicatia corespunzatoare diagnosticului
     medication = data.loc[data['diagnosis'] == diagnosis, 'medications'].values[0]
     
-    # Construim rezultatul
+    # Construim rezultatul final
     result = {
         'diagnosis': diagnosis,
         'probabilities': probabilities,
@@ -147,28 +153,29 @@ def get_diagnosis_and_medication(symptoms_data, data):
 if __name__ == "__main__":
     from data import load_data, get_user_symptoms
     
-    # Setăm seed-ul pentru reproducibilitate
+    # Setam seed pentru reproducibilitate
     np.random.seed(15129)
     
-    # Încărcăm datele
+    # Incarcam datele din fisierul CSV
     data = load_data("data/diagnoses_symptoms_medications.csv")
     
-    # Extragem simptomele disponibile
+    # Extragem lista de simptome (excludem diagnosticul si medicatia)
     symptoms = [col for col in data.columns if col not in ['diagnosis', 'medications']]
     
-    # Obținem simptomele de la utilizator
+    # Obtinem simptomele introduse de utilizator
     user_symptoms = get_user_symptoms(symptoms)
     
     if user_symptoms is not None:
-        # Obținem diagnosticul și medicația
+        # Obtinem diagnosticul si medicatia
         result = get_diagnosis_and_medication(user_symptoms, data)
         
-        # Afișăm rezultatele
+        # Afisam rezultatele
         print(f"\nDiagnostic: {result['diagnosis']}")
-        print(f"Medicație: {result['medication']}")
-        print("\nProbabilități (top 3):")
+        print(f"Medicatie: {result['medication']}")
+        print("\nProbabilitati (top 3):")
         
+        # Afisam primele 3 probabilitati
         for i, (diag, prob) in enumerate(result['probabilities'].items()):
             print(f"- {diag}: {prob*100:.2f}%")
-            if i >= 2:  # Limităm la primele 3
+            if i >= 2:
                 break

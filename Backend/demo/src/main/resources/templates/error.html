@@ -1,55 +1,97 @@
 <!DOCTYPE html>
+<!-- Declaram tipul de document HTML5 -->
 <html xmlns:th="http://www.thymeleaf.org">
+<!-- Namespace pentru Thymeleaf (framework Java pentru template-uri) -->
 <head>
     <meta charset="UTF-8">
+    <!-- Setam encodingul pentru caractere speciale -->
     <title>Eroare</title>
+    <!-- Titlul paginii care apare in tab-ul browserului -->
+
+    <!-- IMPORTAM BOOTSTRAP 5 PENTRU STILIZARE RAPIDA -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
+        /* STILIZAREA CORPULUI PAGINII */
         body {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            background-color: #f8f9fa;
+            height: 100vh; /* Inaltimea = inaltimea ecranului complet */
+            display: flex; /* Folosim flexbox pentru centrare */
+            align-items: center; /* Centreaza vertical continutul */
+            background-color: #f8f9fa; /* Fundal gri deschis (culoare Bootstrap) */
         }
+
+        /* CONTAINERUL PRINCIPAL AL ERORII */
         .error-container {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center; /* Tot textul centrat */
+            padding: 40px; /* Spatiu interior generos */
+            background: white; /* Fundal alb pentru contrast */
+            border-radius: 10px; /* Colturi rotunjite */
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); /* Umbra subtila pentru profunzime */
         }
+
+        /* STILIZAREA CODULUI DE EROARE (404, 500, etc.) */
         .error-code {
-            font-size: 80px;
-            font-weight: bold;
-            color: #dc3545;
-            margin-bottom: 20px;
+            font-size: 80px; /* Dimensiune foarte mare pentru impact vizual */
+            font-weight: bold; /* Text ingrosat */
+            color: #dc3545; /* Rosu Bootstrap pentru erori */
+            margin-bottom: 20px; /* Spatiu sub codul de eroare */
         }
+
+        /* STILIZAREA MESAJULUI DE EROARE */
         .error-message {
-            font-size: 24px;
-            color: #6c757d;
-            margin-bottom: 30px;
+            font-size: 24px; /* Dimensiune mare pentru mesajul principal */
+            color: #6c757d; /* Gri mediu Bootstrap */
+            margin-bottom: 30px; /* Spatiu sub mesaj */
         }
     </style>
 </head>
 <body>
+<!-- FOLOSIM SISTEMUL DE GRID AL BOOTSTRAP PENTRU LAYOUT RESPONSIVE -->
 <div class="container">
+    <!-- ROW PENTRU ORGANIZAREA COLOANELOR -->
     <div class="row justify-content-center">
+        <!-- justify-content-center centreaza coloana orizontal -->
+
+        <!-- COLOANA CARE OCUPA 6/12 PARTI PE ECRANE MEDII SI MARI -->
         <div class="col-md-6">
+
+            <!-- CONTAINERUL CU CONTINUTUL ERORII -->
             <div class="error-container">
+
+                <!-- AFISAREA CODULUI DE EROARE -->
+                <!-- th:text="${status ?: '404'}" inseamna:
+                     - daca variabila 'status' exista, o afiseaza
+                     - daca nu exista, afiseaza '404' ca valoare default -->
                 <div class="error-code" th:text="${status ?: '404'}">404</div>
-                <div class="error-message" th:text="${error ?: 'A apărut o eroare'}">A apărut o eroare</div>
+
+                <!-- AFISAREA MESAJULUI DE EROARE -->
+                <!-- Similar cu status, dar pentru mesajul de eroare -->
+                <div class="error-message" th:text="${error ?: 'A apărut o eroare'}">A apărut o eroare :(</div>
+
+                <!-- MESAJUL SECUNDAR DE SCUZE -->
+                <!-- text-muted = culoare gri deschis Bootstrap -->
+                <!-- mb-4 = margin-bottom cu spatiu mare Bootstrap -->
                 <p class="text-muted mb-4" th:text="${message ?: 'Ne cerem scuze pentru inconveniență.'}">
-                    Ne cerem scuze pentru inconveniență.
+                    Ne cerem scuze pentru inconveniență
                 </p>
+
+                <!-- BUTONUL DE INTOARCERE LA AUTENTIFICARE -->
+                <!-- btn btn-primary btn-lg = clase Bootstrap pentru buton albastru mare -->
                 <a href="/login" class="btn btn-primary btn-lg">
+                    <!-- ICOANA FONTAWESOME PENTRU CASA (ar trebui sa fie vizibila daca FontAwesome se incarca) -->
                     <i class="fas fa-home me-2"></i>Înapoi la Autentificare
+                    <!-- me-2 = margin-end cu spatiu mic Bootstrap -->
                 </a>
             </div>
         </div>
     </div>
 </div>
 
+<!-- IMPORTAM JAVASCRIPT-UL BOOTSTRAP PENTRU FUNCTIONALITATI INTERACTIVE -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- IMPORTAM FONTAWESOME PENTRU ICOANE -->
+<!-- NOTA: 'your-font-awesome-kit' trebuie inlocuit cu kit-ul real -->
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 </body>
 </html>
