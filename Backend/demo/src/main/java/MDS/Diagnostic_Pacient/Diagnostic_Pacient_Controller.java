@@ -1,3 +1,6 @@
+// Controller pentru gestionarea diagnosticelor pacientilor
+// Ofera endpoint-uri pentru operatii legate de pacienti si diagnosticele lor
+
 package MDS.Diagnostic_Pacient;
 
 import MDS.Users.User;
@@ -26,7 +29,7 @@ public class Diagnostic_Pacient_Controller {
     @Autowired
     private User_Repository userRepository;
 
-    // Obține toți pacienții (rol = "pacient")
+    // Obtine toti pacientii (rol = "pacient")
     @GetMapping
     public List<User> getAllPatients() {
         return userRepository.findAll()
@@ -35,7 +38,7 @@ public class Diagnostic_Pacient_Controller {
                 .collect(Collectors.toList());
     }
 
-    // Adaugă un diagnostic pentru un pacient
+    // Adauga un diagnostic pentru un pacient
     @PostMapping("/{pacientId}/diagnoses")
     public ResponseEntity<Diagnostic_Pacient> addDiagnostic(
             @PathVariable Long pacientId,
@@ -43,46 +46,45 @@ public class Diagnostic_Pacient_Controller {
         Long diagnosticId = Long.valueOf(request.get("diagnosticId").toString());
         Long doctorId = request.containsKey("doctorId") ? Long.valueOf(request.get("doctorId").toString()) : null;
 
-        // Verifică pacientul
+        // Verifica pacientul
         User pacient = userRepository.findById(pacientId)
-                .orElseThrow(() -> new RuntimeException("Pacientul nu a fost găsit"));
+                .orElseThrow(() -> new RuntimeException("Pacientul nu a fost gasit"));
         if (!"pacient".equals(pacient.getRol())) {
-            throw new RuntimeException("ID-ul specificat nu aparține unui pacient!");
+            throw new RuntimeException("ID-ul specificat nu apartine unui pacient!");
         }
 
-        // Verifică diagnosticul
+        // Verifica diagnosticul
         Diagnostic diagnostic = diagnosticRepository.findById(diagnosticId)
-                .orElseThrow(() -> new RuntimeException("Diagnosticul nu a fost găsit"));
+                .orElseThrow(() -> new RuntimeException("Diagnosticul nu a fost gasit"));
 
-        // Verifică doctorul (dacă este specificat)
+        // Verifica doctorul (daca este specificat)
         User doctor = null;
         if (doctorId != null) {
             doctor = userRepository.findById(doctorId)
-                    .orElseThrow(() -> new RuntimeException("Doctorul nu a fost găsit"));
+                    .orElseThrow(() -> new RuntimeException("Doctorul nu a fost gasit"));
             if (!"doctor".equals(doctor.getRol())) {
-                throw new RuntimeException("ID-ul specificat nu aparține unui doctor!");
+                throw new RuntimeException("ID-ul specificat nu apartine unui doctor!");
             }
         }
 
         Diagnostic_Pacient diagnosticPacient = new Diagnostic_Pacient();
-        diagnosticPacient.setPacient(pacient); // ID_Pacient va fi USER_ID al pacientului (rol = "pacient")
+        diagnosticPacient.setPacient(pacient); // ID_Pacient este USER_ID al pacientului
         diagnosticPacient.setDiagnostic(diagnostic);
         diagnosticPacient.setDataDiagnostic(new Timestamp(System.currentTimeMillis()));
-        diagnosticPacient.setDoctor(doctor); // ID_Doctor va fi USER_ID al doctorului (rol = "doctor"), dacă există
+        diagnosticPacient.setDoctor(doctor); // ID_Doctor este USER_ID al doctorului, daca exista
 
         Diagnostic_Pacient saved = diagnosticPacientRepository.save(diagnosticPacient);
         return ResponseEntity.ok(saved);
     }
 
-    // Obține toate diagnosticele unui pacient
+    // Obtine toate diagnosticele unui pacient
     @GetMapping("/{pacientId}/diagnoses")
     public List<Diagnostic_Pacient> getPatientDiagnoses(@PathVariable Long pacientId) {
         User pacient = userRepository.findById(pacientId)
-                .orElseThrow(() -> new RuntimeException("Pacientul nu a fost găsit"));
+                .orElseThrow(() -> new RuntimeException("Pacientul nu a fost gasit"));
         if (!"pacient".equals(pacient.getRol())) {
-            throw new RuntimeException("ID-ul specificat nu aparține unui pacient!");
+            throw new RuntimeException("ID-ul specificat nu apartine unui pacient!");
         }
         return diagnosticPacientRepository.findByPacientUserId(pacientId);
     }
-    
 }

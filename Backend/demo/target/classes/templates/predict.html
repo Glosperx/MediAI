@@ -1,49 +1,75 @@
 <!DOCTYPE html>
-<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<html lang="ro" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras">
 <head>
     <meta charset="UTF-8">
     <title>Predicție - MediAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /*background: linear-gradient(135deg, #2EAAFA, #1F2F98);*/
+
+            background: linear-gradient(135deg, #2EAAFA, #3F66D0, #1F2F98);
+
+            /*background: linear-gradient(135deg, #b6d3f2, #4d7acb, #2e5bb6);*/
+
+
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
+            margin: 0;
         }
+
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 2rem;
+            position: relative;
+        }
+
         .container {
             background: white;
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
+            margin: 0 auto;
         }
+
         h1 {
             color: #333;
             text-align: center;
             margin-bottom: 1rem;
         }
+
         .alert-error {
             color: #c33;
-            background-color: #fee;
+            background-color: #ffee;
             border: 1px solid #fcc;
             padding: 0.75rem;
             border-radius: 8px;
             margin-bottom: 1rem;
         }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
             color: #333;
             font-weight: 500;
         }
+
         textarea {
             width: 100%;
             padding: 0.75rem;
@@ -53,20 +79,48 @@
             min-height: 100px;
             box-sizing: border-box;
         }
-        button {
+
+        button{
             width: 100%;
             padding: 0.75rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0b4b8f, #1f69d0);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             transition: opacity 0.3s ease;
+            text-align: center;
+            display: block;
+            text-decoration: none;
         }
-        button:hover {
+
+        .history-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #22c1c3, #00c4cc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+
+        button:hover, .history-button:hover {
             opacity: 0.9;
         }
+
+        .history-button-container {
+            position: absolute;
+            right: 2rem;
+            top: 0;
+            width: 200px;
+        }
+
         .prediction {
             margin-top: 1.5rem;
             padding: 1.5rem;
@@ -74,6 +128,7 @@
             border-radius: 12px;
             border: 1px solid #c3e4ff;
         }
+
         .prediction h3 {
             color: #2c5aa0;
             margin-top: 0;
@@ -81,6 +136,7 @@
             border-bottom: 2px solid #c3e4ff;
             padding-bottom: 0.5rem;
         }
+
         .prediction-item {
             margin-bottom: 1rem;
             padding: 0.75rem;
@@ -88,14 +144,17 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+
         .prediction-item strong {
             color: #2c5aa0;
         }
+
         .probabilities-list {
             margin: 0.5rem 0;
             padding-left: 0;
             list-style: none;
         }
+
         .probabilities-list li {
             padding: 0.4rem 0.8rem;
             margin: 0.3rem 0;
@@ -104,38 +163,44 @@
             border-left: 4px solid #667eea;
         }
 
-        /* Stiluri pentru secțiunea simptomelor */
         .symptoms-section {
             margin-top: 1.5rem;
         }
+
         .symptoms-container {
             display: grid;
             gap: 1rem;
             grid-template-columns: 1fr;
         }
+
         @media (min-width: 768px) {
             .symptoms-container {
                 grid-template-columns: 1fr 1fr;
             }
         }
+
         .symptoms-box {
             padding: 1rem;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
+
         .symptoms-present {
             background: linear-gradient(135deg, #e8f5e8 0%, #f0fdf0 100%);
             border-left: 4px solid #22c55e;
         }
+
         .symptoms-negated {
             background: linear-gradient(135deg, #ffeaea 0%, #fef2f2 100%);
             border-left: 4px solid #ef4444;
         }
+
         .symptoms-warning {
             background: linear-gradient(135deg, #fff3cd 0%, #fefce8 100%);
             border-left: 4px solid #f59e0b;
             grid-column: 1 / -1;
         }
+
         .symptoms-title {
             font-weight: 600;
             margin-bottom: 0.75rem;
@@ -143,25 +208,31 @@
             align-items: center;
             font-size: 1.1em;
         }
+
         .symptoms-icon {
             margin-right: 0.5rem;
             font-size: 1.3em;
             font-weight: bold;
         }
+
         .icon-present {
             color: #16a34a;
         }
+
         .icon-negated {
             color: #dc2626;
         }
+
         .icon-warning {
             color: #d97706;
         }
+
         .symptoms-list {
             margin: 0;
             padding-left: 0;
             list-style: none;
         }
+
         .symptoms-list li {
             padding: 0.5rem 0.75rem;
             margin: 0.3rem 0;
@@ -170,17 +241,21 @@
             font-weight: 500;
             transition: background-color 0.2s ease;
         }
+
         .symptoms-list li:hover {
             background: rgba(255, 255, 255, 0.9);
         }
+
         .symptom-present {
             color: #15803d;
             border-left: 3px solid #22c55e;
         }
+
         .symptom-negated {
             color: #b91c1c;
             border-left: 3px solid #ef4444;
         }
+
         .warning-text {
             color: #92400e;
             font-size: 0.9em;
@@ -198,6 +273,7 @@
             font-size: 0.9em;
             line-height: 1.5;
         }
+
         .disclaimer-title {
             font-weight: 600;
             color: #d97706;
@@ -205,12 +281,13 @@
             display: flex;
             align-items: center;
         }
+
         .disclaimer-icon {
             margin-right: 0.5rem;
             font-size: 1.2em;
         }
 
-        a {
+        a:not(.history-button) {
             color: #667eea;
             text-decoration: none;
             display: block;
@@ -219,108 +296,127 @@
             font-weight: 500;
             transition: color 0.3s ease;
         }
-        a:hover {
+
+        a:not(.history-button):hover {
             color: #764ba2;
+        }
+
+        @media (max-width: 900px) {
+            .page-wrapper {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 1rem;
+            }
+
+            .history-button-container {
+                position: static;
+                width: 100%;
+                max-width: 600px;
+                margin-top: 1rem;
+                order: 2;
+            }
+
+            .container {
+                order: 1;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>MediAI - Predicție Medicală</h1>
+<div class="page-wrapper">
+    <div class="container">
+        <h1>MediAI - Predicție Medicală</h1>
 
-    <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+        <div th:if="${error}" class="alert-error" th:text="${error}"></div>
 
-    <form th:action="@{/predict}" th:object="${diagnosisRequest}" method="post">
-        <div class="form-group">
-            <label for="symptoms">Descrie simptomele tale</label>
-            <textarea id="symptoms" th:field="*{symptoms}" required
-                      placeholder="Ex. Am palpitații și durere de cap, dar nu am tuse"></textarea>
-        </div>
-        <button type="submit">Obține Predicție</button>
-    </form>
+        <form th:action="@{/predict}" th:object="${diagnosisRequest}" method="post">
+            <div class="form-group">
+                <label for="symptoms">Descrie simptomele tale</label>
+                <textarea id="symptoms" th:field="*{symptoms}" required
+                          placeholder="Ex. Am palpitații și durere de cap, dar nu am tuse"></textarea>
+            </div>
+            <button type="submit">Obține Predicție</button>
+        </form>
 
-    <!-- Rezultatul predicției -->
-    <div th:if="${prediction}" class="prediction">
-        <h3>🔍 Rezultatul Analizei</h3>
+        <div th:if="${prediction}" class="prediction">
+            <h3>🔍 Rezultatul Analizei</h3>
 
-        <div class="prediction-item">
-            <strong>Diagnostic:</strong> <span th:text="${prediction.diagnosis}"></span>
-        </div>
+            <div class="prediction-item">
+                <strong>Diagnostic:</strong> <span th:text="${prediction.diagnosis}"></span>
+            </div>
 
-        <div class="prediction-item">
-            <strong>Medicament recomandat:</strong> <span th:text="${prediction.medication}"></span>
-        </div>
+            <div class="prediction-item">
+                <strong>Medicament recomandat:</strong> <span th:text="${prediction.medication}"></span>
+            </div>
 
-        <div class="prediction-item">
-            <strong>Probabilități diagnostic:</strong>
-            <ul class="probabilities-list">
-                <li th:each="entry : ${prediction.probabilities}">
-                    <span th:text="${entry.key} + ': ' + ${#numbers.formatPercent(entry.value, 1, 2)}"></span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Secțiunea pentru simptomele identificate -->
-    <div th:if="${prediction}" class="symptoms-section">
-        <div class="symptoms-container">
-
-            <!-- Simptome prezente -->
-            <div th:if="${prediction.identifiedSymptoms != null and !prediction.identifiedSymptoms.isEmpty()}"
-                 class="symptoms-box symptoms-present">
-                <div class="symptoms-title">
-                    <span class="symptoms-icon icon-present">✓</span>
-                    Simptome identificate ca prezente
-                </div>
-                <ul class="symptoms-list">
-                    <li th:each="symptom : ${prediction.identifiedSymptoms}"
-                        class="symptom-present" th:text="${symptom}"></li>
+            <div class="prediction-item">
+                <strong>Probabilități diagnostic:</strong>
+                <ul class="probabilities-list">
+                    <li th:each="entry : ${prediction.probabilities}">
+                        <span th:text="${entry.key} + ': ' + ${#numbers.formatPercent(entry.value, 1, 2)}"></span>
+                    </li>
                 </ul>
             </div>
+        </div>
 
-            <!-- Simptome negate -->
-            <div th:if="${prediction.negatedSymptoms != null and !prediction.negatedSymptoms.isEmpty()}"
-                 class="symptoms-box symptoms-negated">
-                <div class="symptoms-title">
-                    <span class="symptoms-icon icon-negated">✗</span>
-                    Simptome identificate ca absente
+        <div th:if="${prediction}" class="symptoms-section">
+            <div class="symptoms-container">
+                <div th:if="${prediction.identifiedSymptoms != null and !prediction.identifiedSymptoms.isEmpty()}"
+                     class="symptoms-box symptoms-present">
+                    <div class="symptoms-title">
+                        <span class="symptoms-icon icon-present">✓</span>
+                        Simptome identificate ca prezente
+                    </div>
+                    <ul class="symptoms-list">
+                        <li th:each="symptom : ${prediction.identifiedSymptoms}"
+                            class="symptom-present" th:text="${symptom}"></li>
+                    </ul>
                 </div>
-                <ul class="symptoms-list">
-                    <li th:each="symptom : ${prediction.negatedSymptoms}"
-                        class="symptom-negated" th:text="${symptom}"></li>
-                </ul>
+
+                <div th:if="${prediction.negatedSymptoms != null and !prediction.negatedSymptoms.isEmpty()}"
+                     class="symptoms-box symptoms-negated">
+                    <div class="symptoms-title">
+                        <span class="symptoms-icon icon-negated">✗</span>
+                        Simptome identificate ca absente
+                    </div>
+                    <ul class="symptoms-list">
+                        <li th:each="symptom : ${prediction.negatedSymptoms}"
+                            class="symptom-negated" th:text="${symptom}"></li>
+                    </ul>
+                </div>
             </div>
 
+            <div th:if="${(prediction.identifiedSymptoms == null or prediction.identifiedSymptoms.isEmpty())
+                         and (prediction.negatedSymptoms == null or prediction.negatedSymptoms.isEmpty())}"
+                 class="symptoms-box symptoms-warning">
+                <div class="symptoms-title">
+                    <span class="symptoms-icon icon-warning">⚠</span>
+                    Nu au fost identificate simptome specifice
+                </div>
+                <div class="warning-text">
+                    Sistemul nu a putut identifica simptome specifice din descrierea ta.
+                    Pentru o analiză mai precisă, încearcă să fii mai specific și să folosești
+                    termeni medicali clari (ex: "durere de cap", "febră", "tuse", "greață").
+                </div>
+            </div>
         </div>
 
-        <!-- Mesaj de avertizare dacă nu sunt simptome identificate -->
-        <div th:if="${(prediction.identifiedSymptoms == null or prediction.identifiedSymptoms.isEmpty())
-                     and (prediction.negatedSymptoms == null or prediction.negatedSymptoms.isEmpty())}"
-             class="symptoms-box symptoms-warning">
-            <div class="symptoms-title">
-                <span class="symptoms-icon icon-warning">⚠</span>
-                Nu au fost identificate simptome specifice
+        <div class="disclaimer">
+            <div class="disclaimer-title">
+                <span class="disclaimer-icon">⚕️</span>
+                Important - Consultare Medicală
             </div>
-            <div class="warning-text">
-                Sistemul nu a putut identifica simptome specifice din descrierea ta.
-                Pentru o analiză mai precisă, încearcă să fii mai specific și să folosești
-                termeni medicali clari (ex: "durere de cap", "febră", "tuse", "greață").
-            </div>
+            <strong>Această predicție este generată de inteligența artificială și nu înlocuiește consultarea medicală profesională.</strong>
+            Vă rugăm să consultați un medic pentru un diagnostic precis și tratament adecvat.
+            Nu luați decizii medicale bazate exclusiv pe această predicție AI.
         </div>
+
+        <a href="/logout">Deconectează-te</a>
     </div>
 
-    <!-- Disclaimer important -->
-    <div class="disclaimer">
-        <div class="disclaimer-title">
-            <span class="disclaimer-icon">⚕️</span>
-            Important - Consultare Medicală
-        </div>
-        <strong>Această predicție este generată de inteligența artificială și nu înlocuiește consultarea medicală profesională.</strong>
-        Vă rugăm să consultați un medic pentru un diagnostic precis și tratament adecvat.
-        Nu luați decizii medicale bazate exclusiv pe această predicție AI.
+    <div class="history-button-container" sec:authorize="hasAuthority('PACIENT')">
+        <a th:href="@{/patient/history}" class="history-button">Vezi Istoric Consultatii</a>
     </div>
-
-    <a href="/logout">Deconectează-te</a>
 </div>
 </body>
 </html>

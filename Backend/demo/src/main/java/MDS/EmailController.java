@@ -1,3 +1,6 @@
+// Controller pentru gestionarea trimiterii emailurilor
+// Ofera endpoint pentru trimiterea mesajelor prin email
+
 package MDS;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ public class EmailController {
     @Autowired
     private JavaMailSender mailSender;
 
+    // Trimite un email
     @PostMapping("/send")
     public ResponseEntity<String> sendEmail(@RequestBody EmailRequest emailRequest) {
         try {
@@ -31,13 +35,13 @@ public class EmailController {
         }
     }
 
-    // Clasă internă pentru request body
+    // Clasa pentru datele cererii de email
     public static class EmailRequest {
         private String to;
         private String subject;
         private String message;
 
-        // Constructors
+        // Constructori
         public EmailRequest() {}
 
         public EmailRequest(String to, String subject, String message) {
@@ -46,7 +50,7 @@ public class EmailController {
             this.message = message;
         }
 
-        // Getters și Setters
+        // Getteri si setteri
         public String getTo() {
             return to;
         }

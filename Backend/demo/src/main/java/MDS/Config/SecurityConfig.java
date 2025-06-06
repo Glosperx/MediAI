@@ -42,7 +42,7 @@ public class SecurityConfig {
                         // Configurarea accesului bazat pe roluri
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/consultations/**").hasAnyAuthority("DOCTOR", "ADMIN")
-                        .requestMatchers("/predict/**").hasAnyAuthority("PACIENT", "ADMIN")
+                        .requestMatchers("/predict/**","/patient/history").hasAnyAuthority("PACIENT", "ADMIN")
                         // Toate celelalte cereri necesita autentificare
                         .anyRequest().authenticated()
                 )

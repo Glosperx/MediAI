@@ -25,7 +25,7 @@ public class Simptom_Pacient_Controller {
     @Autowired
     private User_Repository userRepository;
 
-    // Raportează un simptom pentru un pacient
+    // Raporteaza un simptom pentru un pacient
     @PostMapping("/{pacientId}/symptoms")
     public ResponseEntity<Simptom_Pacient> reportSymptom(
             @PathVariable Long pacientId,
@@ -33,9 +33,9 @@ public class Simptom_Pacient_Controller {
         Long simptomId = request.get("simptomId");
 
         User pacient = userRepository.findById(pacientId)
-                .orElseThrow(() -> new RuntimeException("Pacientul nu a fost găsit"));
+                .orElseThrow(() -> new RuntimeException("Pacientul nu a fost gasit"));
         Simptom simptom = simptomRepository.findById(simptomId)
-                .orElseThrow(() -> new RuntimeException("Simptomul nu a fost găsit"));
+                .orElseThrow(() -> new RuntimeException("Simptomul nu a fost gasit"));
 
         Simptom_Pacient simptomPacient = new Simptom_Pacient();
         simptomPacient.setPacient(pacient);
@@ -46,7 +46,7 @@ public class Simptom_Pacient_Controller {
         return ResponseEntity.ok(saved);
     }
 
-    // Obține toate simptomele raportate ale unui pacient
+    // Obtine toate simptomele raportate ale unui pacient
     @GetMapping("/{pacientId}/symptoms")
     public List<Simptom_Pacient> getPatientSymptoms(@PathVariable Long pacientId) {
         return simptomPacientRepository.findByPacientUserId(pacientId);

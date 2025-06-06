@@ -10,7 +10,7 @@ public class Diagnosis_Response {
     private List<String> identifiedSymptoms;  // Simptome prezente
     private List<String> negatedSymptoms;     // Simptome negate
 
-    // Getters and Setters pentru proprietățile existente
+    // Getters si Setteri pentru proprietațile existente
     public String getDiagnosis() {
         return diagnosis;
     }
@@ -35,7 +35,7 @@ public class Diagnosis_Response {
         this.probabilities = probabilities;
     }
 
-    // Getters and Setters pentru simptomele identificate
+    // Getters si Setteri pentru simptomele identificate
     public List<String> getIdentifiedSymptoms() {
         return identifiedSymptoms;
     }
@@ -44,7 +44,7 @@ public class Diagnosis_Response {
         this.identifiedSymptoms = identifiedSymptoms;
     }
 
-    // Getters and Setters pentru simptomele negate
+    // Getters si Setteri pentru simptomele negate
     public List<String> getNegatedSymptoms() {
         return negatedSymptoms;
     }

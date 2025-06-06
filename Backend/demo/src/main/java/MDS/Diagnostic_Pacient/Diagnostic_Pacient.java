@@ -43,7 +43,7 @@ public class Diagnostic_Pacient {
         this.doctor = doctor;
     }
 
-    // Getters și Setters
+    // Getters si Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public User getPacient() { return pacient; }

@@ -7,4 +7,7 @@ SELECT email, parola, activ, rol FROM users WHERE email = 'alexandrucojoaca8@gma
 
 DELETE
 FROM USERS
-WHERE email = 'alexandrucojoaca8@gmail.com';
+WHERE email = 'alexandrucojoaca11@gmail.com';
+
+SELECT *
+FROM USERS;

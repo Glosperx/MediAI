@@ -25,7 +25,7 @@ public class Diagnostic {
         this.gravitate = gravitate;
     }
 
-    //Getters and Setters
+    //Getters si Setteri
     public Long getId() {
         return id;
     }

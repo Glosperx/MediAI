@@ -1,29 +1,24 @@
 <!DOCTYPE html>
-<!-- Declararea documentului HTML cu limba romana si namespace Thymeleaf -->
 <html lang="ro" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autentificare - MediAI</title>
     <style>
-        /* Reset CSS - elimina margin si padding default pentru toate elementele */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Stilizarea body-ului cu gradient de fundal si centarea continutului */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Containerul principal pentru formularul de login */
         .login-container {
             background: white;
             padding: 2rem;
@@ -34,7 +29,6 @@
             animation: slideUp 0.5s ease-out;
         }
 
-        /* Animatie de aparitie a containerului de login */
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -46,31 +40,26 @@
             }
         }
 
-        /* Stilizarea header-ului cu titlul si descrierea */
         .login-header {
             text-align: center;
             margin-bottom: 2rem;
         }
 
-        /* Stilizarea titlului principal */
         .login-header h1 {
             color: #333;
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
 
-        /* Stilizarea descrierii de sub titlu */
         .login-header p {
             color: #666;
             font-size: 0.9rem;
         }
 
-        /* Stilizarea grupurilor de input-uri din formular */
         .form-group {
             margin-bottom: 1.5rem;
         }
 
-        /* Stilizarea label-urilor pentru input-uri */
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
@@ -78,7 +67,6 @@
             font-weight: 500;
         }
 
-        /* Stilizarea input-urilor (email si parola) */
         .form-group input {
             width: 100%;
             padding: 0.75rem;
@@ -88,14 +76,12 @@
             transition: border-color 0.3s ease;
         }
 
-        /* Stilizarea input-urilor cand sunt in focus */
         .form-group input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        /* Stilizarea butonului de login */
         .login-btn {
             width: 100%;
             padding: 0.75rem;
@@ -109,18 +95,15 @@
             transition: transform 0.2s ease;
         }
 
-        /* Efectul de hover pentru butonul de login */
         .login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        /* Efectul de apasare pentru butonul de login */
         .login-btn:active {
             transform: translateY(0);
         }
 
-        /* Stilizarea generala pentru mesajele de alerta */
         .alert {
             padding: 0.75rem;
             border-radius: 8px;
@@ -128,91 +111,76 @@
             font-size: 0.9rem;
         }
 
-        /* Stilizarea mesajelor de eroare */
         .alert-error {
             background-color: #fee;
             color: #c33;
             border: 1px solid #fcc;
         }
 
-        /* Stilizarea mesajelor de succes */
         .alert-success {
             background-color: #efe;
             color: #363;
             border: 1px solid #cfc;
         }
 
-        /* Stilizarea sectiunii cu link-ul de inregistrare */
         .register-link {
             text-align: center;
             margin-top: 1.5rem;
             color: #666;
         }
 
-        /* Stilizarea link-ului de inregistrare */
         .register-link a {
             color: #667eea;
             text-decoration: none;
             font-weight: 500;
         }
 
-        /* Efectul de hover pentru link-ul de inregistrare */
         .register-link a:hover {
             text-decoration: underline;
         }
 
-        /* Stilizarea asteriscului pentru campurile obligatorii */
         .required {
             color: #e74c3c;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const gradients = [
+                "linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%)",
+                "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
+                "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+                "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+            ];
+            document.body.style.background = gradients[Math.floor(Math.random() * gradients.length)];
+        });
+    </script>
 </head>
 <body>
-<!-- Containerul principal pentru formularul de autentificare -->
 <div class="login-container">
-    <!-- Header-ul cu titlul si descrierea paginii -->
     <div class="login-header">
         <h1>Autentificare</h1>
         <p>Introdu datele de conectare pentru a accesa platforma MediAI</p>
     </div>
 
-    <!-- Mesajele de eroare - afisate conditional daca exista variabila 'error' -->
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
-
-    <!-- Mesajele de succes - afisate conditional daca exista variabila 'message' -->
     <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
 
-    <!-- Formularul de autentificare cu actiunea POST catre endpoint-ul de login -->
     <form th:action="@{/api/auth/login}" method="post">
-        <!-- Grupul pentru input-ul de email -->
         <div class="form-group">
             <label for="email">Email <span class="required">*</span></label>
-            <!-- Input pentru email cu validare HTML5 si placeholder -->
-            <input type="email"
-                   id="email"
-                   name="email"
-                   required
-                   placeholder="numele@exemplu.com">
+            <input type="email" id="email" name="email" required placeholder="numele@exemplu.com">
         </div>
 
-        <!-- Grupul pentru input-ul de parola -->
         <div class="form-group">
             <label for="password">Parolă <span class="required">*</span></label>
-            <!-- Input pentru parola cu type="password" pentru mascare -->
-            <input type="password"
-                   id="password"
-                   name="password"
-                   required
-                   placeholder="Introdu parola">
+            <input type="password" id="password" name="password" required placeholder="Introdu parola">
         </div>
 
-        <!-- Butonul de submit pentru trimiterea formularului -->
-        <button type="submit" class="login-btn">
-            Autentifică-te
-        </button>
+        <button type="submit" class="login-btn">Autentifică-te</button>
     </form>
 
-    <!-- Sectiunea cu link-ul catre pagina de inregistrare -->
     <div class="register-link">
         <p>Nu ai cont? <a href="/register">Înregistrează-te aici</a></p>
     </div>

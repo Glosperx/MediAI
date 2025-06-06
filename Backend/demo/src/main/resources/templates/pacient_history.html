@@ -1,10 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- Declarare document HTML cu namespace pentru Thymeleaf si Spring Security -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Istoric Consultatii</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Includere Bootstrap pentru stilizare -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Stiluri CSS personalizate pentru pagina istoric -->
+    <style>
+        /* Stiluri container principal */
+        .history-container {
+            background-color: #e9f0fa;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 100vh;
+        }
+        /* Stiluri antet utilizator */
+        .user-header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        /* Stiluri element lista consultatii */
+        .consultation-item {
+            background-color: white;
+            border-left: 4px solid #4a90e2;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+        .consultation-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        /* Stiluri detalii medicale */
+        .medical-details {
+            background-color: #f0f7ff;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        /* Stiluri titlu */
+        .history-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        /* Stiluri badge status */
+        .status-badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="history-container container mt-4">
+    <!-- Sectiune antet utilizator -->
+    <div class="user-header">
+        <!-- Afisare data si ora curenta -->
+        <div class="datetime-info">
+            Data si ora curenta (UTC - YYYY-MM-DD HH:MM:SS):
+            <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </div>
+        <!-- Afisare email utilizator logat -->
+        <div class="user-login">
+            Utilizator logat: <span sec:authentication="name"></span>
+        </div>
+        <!-- Buton deconectare -->
+        <div class="text-end">
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-outline-light"
+                        onclick="return confirm('Sunteti sigur ca doriti sa va deconectati?')">
+                    Deconectare
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Titlu pagina -->
+    <h2 class="history-title">Istoric Consultatii</h2>
+
+    <!-- Lista consultatii -->
+    <div class="row">
+        <div class="col-12">
+            <!-- Mesaj pentru lipsa consultatiilor -->
+            <div th:if="${#lists.isEmpty(consultations)}" class="alert alert-info">
+                Nu exista consultatii inregistrate.
+            </div>
+
+            <!-- Iterare consultatii -->
+            <div th:each="consultation : ${consultations}" class="consultation-item">
+                <!-- Header cu ID si status -->
+                <h4>
+                    Consultatie #<span th:text="${consultation.id}"></span>
+                    <!-- Badge pentru aprobat -->
+                    <span th:if="${consultation.aprobat}"
+                          class="badge bg-success status-badge float-end">Aprobata</span>
+                    <!-- Badge pentru in asteptare -->
+                    <span th:unless="${consultation.aprobat}"
+                          class="badge bg-warning status-badge float-end">In asteptare</span>
+                </h4>
+
+                <!-- Informatii consultatie -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Email doctor sau nealocat -->
+                        <p><strong>Doctor:</strong>
+                            <span th:text="${consultation.doctor != null ? consultation.doctor.email : 'Nealocat'}"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Data consultatie sau nedefinita -->
+                        <p><strong>Data:</strong>
+                            <span th:text="${consultation.dataConsultatie != null ?
+                                     #temporals.format(consultation.dataConsultatie, 'yyyy-MM-dd HH:mm:ss') : 'Nedefinita'}">
+                            </span>
+                        </p>
+                        <!-- Nota consultatiei -->
+                        <p th:if="${consultation.nota}">
+                            <strong>Nota:</strong> <span th:text="${consultation.nota}"></span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Detalii medicale -->
+                <div class="medical-details" th:if="${!#lists.isEmpty(consultation.simptome) ||
+                                                        !#lists.isEmpty(consultation.diagnostice) ||
+                                                        !#lists.isEmpty(consultation.medicatii)}">
+                    <div class="row">
+                        <!-- Simptome -->
+                        <div class="col-md-4" th:if="${!#lists.isEmpty(consultation.simptome)}">
+                            <h5>Simptome:</h5>
+                            <ul class="list-unstyled">
+                                <li th:each="simptom : ${consultation.simptome}" th:text="${simptom}"></li>
+                            </ul>
+                        </div>
+                        <!-- Diagnostice -->
+                        <div class="col-md-4" th:if="${!#lists.isEmpty(consultation.diagnostice)}">
+                            <h5>Diagnostic:</h5>
+                            <ul class="list-unstyled">
+                                <li th:each="diagnostic : ${consultation.diagnostice}" th:text="${diagnostic}"></li>
+                            </ul>
+                        </div>
+                        <!-- Medicatii -->
+                        <div class="col-md-4" th:if="${!#lists.isEmpty(consultation.medicatii)}">
+                            <h5>Medicatie:</h5>
+                            <ul class="list-unstyled">
+                                <li th:each="medicatie : ${consultation.medicatii}" th:text="${medicatie}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Includere JavaScript Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+```

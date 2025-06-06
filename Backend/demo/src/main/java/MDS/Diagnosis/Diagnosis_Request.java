@@ -15,7 +15,7 @@ public class Diagnosis_Request {
         this.idDoctor = idDoctor;
     }
 
-    // Getters și Setters
+    // Getters si Setteri
     public Long getIdPacient() {
         return idPacient;
     }

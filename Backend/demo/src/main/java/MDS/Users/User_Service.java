@@ -14,9 +14,9 @@ import java.util.Optional;
 @Service
 public class User_Service {
     private static final Logger logger = LoggerFactory.getLogger(User_Service.class);
-    private final User_Repository userRepository; // repository pentru operatii cu baza de date
-    private final PasswordEncoder passwordEncoder; // encoder pentru criptarea parolelor
-    private static final List<String> VALID_ROLES = Arrays.asList("ADMIN", "DOCTOR", "PACIENT"); // lista rolurilor valide
+    private final User_Repository userRepository; // repository pentru baza de date
+    private final PasswordEncoder passwordEncoder; // pentru criptarea parolelor
+    private static final List<String> VALID_ROLES = Arrays.asList("ADMIN", "DOCTOR", "PACIENT"); // roluri valide
 
     // Constructor
     public User_Service(User_Repository userRepository, @Lazy PasswordEncoder passwordEncoder) {
@@ -24,116 +24,112 @@ public class User_Service {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * Cauta un utilizator dupa adresa de email
-     * @param email - adresa de email a utilizatorului
-     * @return Optional<User> - utilizatorul gasit sau Optional.empty() daca nu exista
-     */
-
+    // Cauta utilizator dupa email
     public Optional<User> findByEmail(String email) {
-        logger.debug("Căutare utilizator cu email: {}", email);
-        return userRepository.findByEmail(email); // cauta utilizatorul in baza de date
+        logger.debug("Cautare utilizator cu email: {}", email);
+        return userRepository.findByEmail(email); // cauta in baza de date
     }
 
-    // Salveaza utilizatorul cu parola normala
+    // Salveaza utilizator
     @Transactional
     public void save(User user) {
         logger.debug("Salvare utilizator: {}", user);
-        userRepository.save(user); // salveaza utilizatorul in baza de date
+        userRepository.save(user); // salveaza in baza de date
     }
 
-    // Salveaza utilizatorul si cripteaza parola
+    // Salveaza utilizator cu parola criptata
     @Transactional
     public void saveWithEncryption(User user) {
         logger.debug("Salvare utilizator cu criptare: {}", user.getEmail());
-        user.setParola(passwordEncoder.encode(user.getParola())); // cripteaza parola inainte de salvare
-        userRepository.save(user); // salveaza utilizatorul cu parola criptata
+        user.setParola(passwordEncoder.encode(user.getParola())); // cripteaza parola
+        userRepository.save(user); // salveaza utilizator
     }
 
-    // Creeaza un utilizator nou
+    // Creeaza utilizator nou
     @Transactional
     public void registerUser(String acronim, String rol, String email, String parola) {
-        logger.info("Înregistrare utilizator: email={}, rol={}", email, rol);
+        logger.info("Inregistrare utilizator: email={}, rol={}", email, rol);
 
-        // Validare rol
-        if (!VALID_ROLES.contains(rol.toUpperCase())) { // verifica daca rolul este valid
+        // Verifica rol
+        if (!VALID_ROLES.contains(rol.toUpperCase())) {
             logger.error("Rol invalid: {}", rol);
-            throw new IllegalArgumentException("Rol invalid: " + rol + ". Rolurile valide sunt: " + VALID_ROLES);
+            throw new IllegalArgumentException("Rol invalid: " + rol + ". Roluri valide: " + VALID_ROLES);
         }
 
-        // Verifică email existent
-        if (userRepository.existsByEmail(email)) { // verifica daca emailul exista deja
-            logger.error("Email-ul există deja: {}", email);
-            throw new IllegalArgumentException("Email-ul este deja înregistrat: " + email);
+        // Verifica email existent
+        if (userRepository.existsByEmail(email)) {
+            logger.error("Email existent: {}", email);
+            throw new IllegalArgumentException("Email inregistrat: " + email);
         }
 
-        // Validare lungime acronim
-        if (acronim != null && acronim.length() > 10) { // verifica lungimea acronimului
+        // Verifica lungime acronim
+        if (acronim != null && acronim.length() > 10) {
             logger.error("Acronim prea lung: {}", acronim);
-            throw new IllegalArgumentException("Acronimul nu poate depăși 10 caractere");
+            throw new IllegalArgumentException("Acronim maxim 10 caractere");
         }
 
-        User user = new User(); // creeaza un nou utilizator
-        user.setAcronim(acronim); // seteaza acronimul
-        user.setRol(rol.toUpperCase()); // seteaza rolul in uppercase
-        user.setEmail(email); // seteaza emailul
-        user.setParola(passwordEncoder.encode(parola)); // cripteaza si seteaza parola
-        user.setActiv(false); // Cont inactiv până la activare
-        userRepository.save(user); // salveaza utilizatorul in baza de date
+        User user = new User(); // creeaza utilizator
+        user.setAcronim(acronim); // seteaza acronim
+        user.setRol(rol.toUpperCase()); // seteaza rol
+        user.setEmail(email); // seteaza email
+        user.setParola(passwordEncoder.encode(parola)); // cripteaza parola
+        user.setActiv(false); // cont inactiv pana la activare
+        userRepository.save(user); // salveaza utilizator
         logger.info("Utilizator salvat: {}", user);
     }
 
-    // Activeaza contul unui utilizator
+    // Activeaza cont utilizator
     @Transactional
     public void activateUser(String email) {
         logger.info("Activare utilizator: {}", email);
-        User user = userRepository.findByEmail(email) // cauta utilizatorul dupa email
-                .orElseThrow(() -> { // daca nu gaseste utilizatorul, arunca exceptie
-                    logger.error("Utilizator negăsit pentru activare: {}", email);
-                    return new IllegalArgumentException("Utilizator negăsit: " + email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    logger.error("Utilizator negasit: {}", email);
+                    return new IllegalArgumentException("Utilizator negasit: " + email);
                 });
-        user.setActiv(true); // activeaza contul utilizatorului
-        userRepository.save(user); // salveaza modificarea in baza de date
+        user.setActiv(true); // activeaza cont
+        userRepository.save(user); // salveaza modificari
         logger.info("Utilizator activat: {}", user);
     }
 
-    // Verifică dacă emailul există deja
+    // Verifica existenta email
     public boolean existsByEmail(String email) {
-        boolean exists = userRepository.existsByEmail(email); // verifica existenta emailului
+        boolean exists = userRepository.existsByEmail(email);
         logger.debug("Verificare email {}: {}", email, exists);
-        return exists; // returneaza true daca emailul exista
+        return exists;
     }
 
+    // Creeaza cont admin
     @Transactional
     public User createAdmin(String email, String parola) {
         logger.info("Creare cont admin: {}", email);
 
-        // Verifică doar dacă email-ul există
-        if (userRepository.existsByEmail(email)) { // verifica daca emailul exista deja
-            logger.error("Email-ul există deja: {}", email);
-            throw new IllegalArgumentException("Email-ul este deja înregistrat: " + email);
+        // Verifica email existent
+        if (userRepository.existsByEmail(email)) {
+            logger.error("Email existent: {}", email);
+            throw new IllegalArgumentException("Email inregistrat: " + email);
         }
 
-        // Validare email
-        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { // valideaza formatul emailului
+        // Valideaza email
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new IllegalArgumentException("Email invalid");
         }
 
-        // Validare parolă
-        if (parola == null || parola.length() < 8) { // verifica lungimea parolei
-            throw new IllegalArgumentException("Parola trebuie să aibă cel puțin 8 caractere");
+        // Valideaza parola
+        if (parola == null || parola.length() < 8) {
+            throw new IllegalArgumentException("Parola minim 8 caractere");
         }
 
-        User admin = new User(); // creeaza un nou utilizator admin
-        admin.setAcronim("ADM"); // seteaza acronimul pentru admin
-        admin.setRol("ADMIN"); // seteaza rolul de administrator
-        admin.setEmail(email); // seteaza emailul
-        admin.setParola(passwordEncoder.encode(parola)); // cripteaza si seteaza parola
-        admin.setActiv(true); // adminul este activ din start
+        User admin = new User(); // creeaza admin
+        admin.setAcronim("ADM"); // seteaza acronim
+        admin.setRol("ADMIN"); // seteaza rol
+        admin.setEmail(email); // seteaza email
+        admin.setParola(passwordEncoder.encode(parola)); // cripteaza parola
+        admin.setActiv(true); // admin activ
 
-        userRepository.save(admin); // salveaza adminul in baza de date
-        logger.info("Admin creat cu succes: {}", admin);
+        userRepository.save(admin); // salveaza admin
+        logger.info("Admin creat: {}", admin);
 
-        return admin; // returneaza utilizatorul admin creat
+        return admin; // returneaza admin
     }
 }
