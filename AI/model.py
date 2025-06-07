@@ -126,7 +126,7 @@ class DiagnosisPredictor:
         roc_auc = dict()
         valid_classes = []
         for i in range(n_classes):
-            if y_test_bin[:, i].sum() > 0:  # Verificam dacă există mostre pozitive
+            if y_test_bin[:, i].sum() > 0:  # Verificam daca exista mostre pozitive
                 fpr[i], tpr[i], _ = roc_curve(y_test_bin[:, i], y_score[:, i])
                 roc_auc[i] = auc(fpr[i], tpr[i])
                 valid_classes.append(i)
@@ -147,7 +147,7 @@ class DiagnosisPredictor:
         plt.xlim([0.0, 1.0])
         plt.ylim([0.0, 1.05])
         plt.xlabel('Rata de Fals Pozitive (FPR)')
-        plt.ylabel('Rata de Adevărate Pozitive (TPR)')
+        plt.ylabel('Rata de Adevarate Pozitive (TPR)')
         plt.title('Curba ROC pentru Clasificare Multi-Clasa')
         plt.legend(loc="lower right")
         plt.grid(True)
